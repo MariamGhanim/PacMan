@@ -1,6 +1,6 @@
 package UIwindows.menu;
 
-import UIwindows.WhileGaming;
+import UIwindows.menu.choosePlayers;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class startOrExit {
         // Add Action Listeners
         startButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
-            WhileGaming.showWhileGaming(gameWindow);
+            choosePlayers.showchoosePlayers(gameWindow);
         });
 
         helpButton.addActionListener(e -> JOptionPane.showMessageDialog(gameWindow,

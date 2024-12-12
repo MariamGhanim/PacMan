@@ -6,8 +6,8 @@ import javax.media.opengl.GLCanvas;
 import javax.swing.*;
 import java.awt.*;
 
-public class Levels {
-    public static void showLevels(JFrame gameWindow) {
+public class twoLevels {
+    public static void showTwoLevels(JFrame gameWindow) {
         // Create the OpenGL canvas
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new PlayGame.GameRenderer());
