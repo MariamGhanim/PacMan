@@ -51,6 +51,7 @@ public class choosePlayers {
                 JFrame usernameWindow = new JFrame("Username");
                 new username().showUsername(usernameWindow);
                 usernameWindow.setSize(800, 600);  // Set size for the new window
+                usernameWindow.setLocationRelativeTo(null);
                 usernameWindow.setResizable(true); // Allow resizing the new window
                 usernameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Close the window properly
                 usernameWindow.setVisible(true);  // Make sure the new window is visible
