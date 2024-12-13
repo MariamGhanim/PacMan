@@ -16,7 +16,7 @@ public class ChooseMpLevels {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = new ImageIcon("E:\\CS304\\Labs\\PacMan_Project\\PacMan_New\\src\\Assets\\screens\\wall_2.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
-                // i scale  the image to fit the panel size
+
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
