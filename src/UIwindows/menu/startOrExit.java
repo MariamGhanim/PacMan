@@ -14,7 +14,7 @@ public class startOrExit {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
 
-                ImageIcon backgroundIcon = new ImageIcon("Assets/titleScreen.jpg");
+                ImageIcon backgroundIcon = new ImageIcon("PacMan/Assets/titleScreen.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }

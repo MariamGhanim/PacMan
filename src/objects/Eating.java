@@ -4,17 +4,24 @@ public class Eating {
     public int x, y;
     static float scale = 0.5f;
     int index = 5;
-    public Eating(int x,int y){
+    public Eating(int x, int y){
         this.x = x;
         this.y=y;
         this.index = index;
     }
 
-    public int getX() {
+    public int ConvertX() {
         return (x+1) * 15 - 2;
+    }
+    public int getX(){
+        return x;
     }
 
     public int getY() {
+        return y;
+    }
+
+    public int ConvertY() {
         return (y+1) *15 - 8;
     }
 
@@ -24,8 +31,5 @@ public class Eating {
 
     public int getIndex() {
         return index;
-    }
-    public void setIndex(int index){
-        this.index = index;
     }
 }

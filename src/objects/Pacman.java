@@ -38,4 +38,11 @@ public class Pacman {
     public void setX(int x) {
         this.x = x;
     }
+
+    public int ConvertX(){
+        return (x+2)/15 - 1;
+    }
+    public int ConvertY(){
+        return (y+8)/15 - 1;
+    }
 }
