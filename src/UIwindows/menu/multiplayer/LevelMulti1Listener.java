@@ -1,4 +1,4 @@
-package drawing.Maps.MultiMaps;
+package UIwindows.menu.multiplayer;
 
 import objects.Eating;
 import objects.Pacman;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
-public class LevelMulti1Listener extends AnimListener implements KeyListener , GLEventListener {
+public class LevelMulti1Listener extends AnimListener implements KeyListener , GLEventListener{
 
     int maxWidth = 600;
     int maxHeight = 600;
@@ -27,7 +27,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     Pacman pacman2 = new Pacman(x2,y2,index2);
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
-             //5
+            //5
             "apple.png","blinky.png","pinky.png",
             "heart.png", "Map.jpg"
     };
@@ -87,6 +87,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glGenTextures(textureNames.length, textures, 0);
 
+
         for (int i = 0; i < textureNames.length; i++) {
             try {
                 texture[i] = TextureReader.readTexture(assetsFolderName + "//" + textureNames[i], true);
@@ -126,7 +127,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     }
 
     public void DrawFood(GL gl){
-       for(Eating e : eating) DrawSprite(e.getX(),e.getY(),e.getIndex(),0.4f);
+        for(Eating e : eating) DrawSprite(e.getX(),e.getY(),e.getIndex(),0.4f);
     }
     public void DrawSprite(int x, int y, int index, float scale) {
         gl.glEnable(GL.GL_BLEND);
@@ -184,7 +185,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
             case KeyEvent.VK_RIGHT -> {
                 if(pacman1.getIndex() == 0) pacman1.setIndex(2);
                 else pacman1.setIndex(0);
-               if(x < maxWidth - 40) pacman1.setX( x += 5);
+                if(x < maxWidth - 40) pacman1.setX( x += 5);
             }
             case KeyEvent.VK_LEFT -> {
                 if(pacman1.getIndex() == 0) pacman1.setIndex(4);
@@ -195,19 +196,19 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
             case KeyEvent.VK_W -> {
                 if(pacman2.getIndex() == 0) pacman2.setIndex(1);
                 else pacman2.setIndex(0);
-               if(y2 < maxHeight -40) pacman2.setY( y2 += 5);
+                if(y2 < maxHeight -40) pacman2.setY( y2 += 5);
             }
             //down
             case KeyEvent.VK_S -> {
                 if(pacman2.getIndex() == 0) pacman2.setIndex(3);
                 else pacman2.setIndex(0);
-               if(y2 > 30) pacman2.setY( y2 -= 5);
+                if(y2 > 30) pacman2.setY( y2 -= 5);
             }
             //right
             case KeyEvent.VK_D -> {
                 if(pacman2.getIndex() == 0) pacman2.setIndex(2);
                 else pacman2.setIndex(0);
-               if(x2 < maxHeight -40) pacman2.setX( x2 += 5);
+                if(x2 < maxHeight -40) pacman2.setX( x2 += 5);
             }
             //left
             case KeyEvent.VK_A -> {

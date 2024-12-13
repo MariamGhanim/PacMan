@@ -125,6 +125,8 @@ public class twoUsername {
         new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
 
         gameWindow.setSize(800, 600);
+        gameWindow.setLocationRelativeTo(null);//علشان تظهر في نص الشاشه
+
         gameWindow.setResizable(true);
         gameWindow.setVisible(true);
         gameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

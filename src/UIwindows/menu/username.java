@@ -17,6 +17,7 @@ public class username {
         canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
 
+
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
         inputPanel.setBackground(Color.YELLOW);
