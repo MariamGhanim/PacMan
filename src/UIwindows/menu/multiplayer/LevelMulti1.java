@@ -1,4 +1,4 @@
-package UIwindows.menu.multiplayer;
+                         package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
