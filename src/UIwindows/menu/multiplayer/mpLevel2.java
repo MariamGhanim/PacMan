@@ -1,18 +1,43 @@
 package UIwindows.menu.multiplayer;
 
 import UIwindows.PlayGame;
+import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.FPSAnimator;
+import texture.AnimListener;
 
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
 import java.awt.*;
 
-public class mpLevel2 {
+public class mpLevel2 extends JFrame{
     public static void showMpLevel2(JFrame gameWindow) {
-        GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
-        gameWindow.getContentPane().add(canvas, BorderLayout.CENTER);
+        GLCanvas glcanvas;
+        Animator animator;
+
+        AnimListener listener = new Level2MultiListener();
+        glcanvas = new GLCanvas();
+        glcanvas.addGLEventListener(listener);
+        glcanvas.addKeyListener(listener);
+
+
+        animator = new FPSAnimator(15);
+        animator.add(glcanvas);
+        animator.start();
+
+
+        gameWindow.getContentPane().removeAll();
+        gameWindow.getContentPane().add(glcanvas, BorderLayout.CENTER);
+
+        // Set the canvas size to fill the window
+        glcanvas.setPreferredSize(new Dimension(gameWindow.getWidth(), gameWindow.getHeight()));
+
         gameWindow.revalidate();
         gameWindow.repaint();
-        new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
+        gameWindow.setLocationRelativeTo(null);
+        glcanvas.requestFocus();
+
     }
+
+
 }
+
