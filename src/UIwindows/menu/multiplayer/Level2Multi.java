@@ -18,7 +18,7 @@ public class Level2Multi extends JFrame {
         GLCanvas glcanvas;
         Animator animator;
 
-        AnimListener listener = new LevelMulti1Listener();
+        AnimListener listener = new Level2MultiListener();
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
@@ -27,7 +27,7 @@ public class Level2Multi extends JFrame {
         animator.add(glcanvas);
         animator.start();
 
-        setTitle("Level 1 MultiPlayer");
+        setTitle("Level 2 MultiPlayer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);

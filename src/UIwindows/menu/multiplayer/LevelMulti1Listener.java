@@ -23,7 +23,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     int maxHeight = 600;
     int index1 = 0,index2=0;
     int x = 40,y = 540,x2=555,y2=60;
-    ArrayList<Eating> eating = new ArrayList<Eating>();
+    ArrayList<Eating> eat = new ArrayList<Eating>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
     int score1 = 0,score2 = 0;
@@ -98,43 +98,52 @@ int rows = map.length;
                 e.printStackTrace();
             }
         }
+        addFood();
     }
 
-public void addFood(){
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < column; j++) {
-            if(i % 2 == 0 && j % 3 ==0) {
-                if(i==j && map[i][j] == 1) eating.add(new Eating(j,i,5));
-                else if (map[i][j] == 1) {
-                    eating.add(new Eating(j, i,6));
+    public void addFood(){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < column; j++) {
+                if(i % 2 == 0 && j % 3 ==0) {
+                    if(map[i][j] == 1 && i == j) eat.add(new Eating(j,i,5));
+                    else if (map[i][j] == 1) {
+                        eat.add(new Eating(j, i,6));
+                    }
                 }
             }
         }
     }
-}
     public void DrawFood(GL gl){
-        for(Eating e : eating)
-            DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.5f);
+        for(Eating e : eat)
+            DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.8f);
     }
-//    public void drawFood(){
-//        for (int i = 40; i <maxWidth ; i+=40) {
-//            for (int j = 60; j < maxHeight; j+=50) {
-//                DrawSprite(i,j,5,0.5f);
-//            }
-//        }
-//    }
+    public void handleEat(){
+        for (int i = 0; i < eat.size(); i++) {
+            if(pacman1.ConvertX()== eat.get(i).getX() && pacman1.ConvertY() == eat.get(i).getY()){
+                eat.remove(i);
+                score1++;
+                System.out.println("I am eating");
+                //handle sound
+            }
+            if(pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()){
+                eat.remove(i);
+                score2++;
+                //handle sound
+            }
+        }
+    }
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         DrawBackground();
-        addFood();
         DrawFood(gl);
         //draw two pacman
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
         handleKey();
+        handleEat();
 
 //        System.out.println(pacman2.getX()+" "+ pacman2.getY());
     }
@@ -177,43 +186,45 @@ public void addFood(){
         if (isKeyPressed(VK_DOWN)){
             if (pacman1.getIndex() == 0) pacman1.setIndex(3);
             else pacman1.setIndex(0);
-            if (y > 60) pacman1.setY(y -= 7);
+            if(map[pacman1.ConvertY() - 1][pacman1.ConvertX()] == 1) pacman1.setY(y -= 7);
         }
         if(isKeyPressed(VK_UP)){
             if (pacman1.getIndex() == 0) pacman1.setIndex(1);
             else pacman1.setIndex(0);
-            if (y < maxHeight - 60) pacman1.setY(y += 7);
+            if(map[pacman1.ConvertY() + 1][pacman1.ConvertX()] == 1) pacman1.setY(y += 7);
         }
         if(isKeyPressed(VK_RIGHT)){
             if (pacman1.getIndex() == 0) pacman1.setIndex(2);
             else pacman1.setIndex(0);
-            if (x < maxWidth - 45) pacman1.setX(x += 7);
+            if (x < maxWidth - 45){
+                if(map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
+            }
         }
         if(isKeyPressed(VK_LEFT)){
             if (pacman1.getIndex() == 0) pacman1.setIndex(4);
             else pacman1.setIndex(0);
-            if (x > 45) pacman1.setX(x -= 7);
+            if(map[pacman1.ConvertY() ][pacman1.ConvertX() - 1] == 1) pacman1.setX(x -= 7);
         }
         //for the PacMan 2
         if(isKeyPressed(VK_W)){
             if(pacman2.getIndex() == 0) pacman2.setIndex(1);
             else pacman2.setIndex(0);
-            if(y2 < maxHeight -60) pacman2.setY( y2 += 7);
+            if(map[pacman2.ConvertY() + 1][pacman2.ConvertX()] == 1) pacman2.setY( y2 += 7);
         }
         if(isKeyPressed(VK_S)){
             if(pacman2.getIndex() == 0) pacman2.setIndex(3);
             else pacman2.setIndex(0);
-            if(y2 > 60) pacman2.setY( y2 -= 7);
+            if(map[pacman2.ConvertY() - 1][pacman2.ConvertX()] == 1) pacman2.setY( y2 -= 7);
         }
         if(isKeyPressed(VK_D)){
             if(pacman2.getIndex() == 0) pacman2.setIndex(2);
             else pacman2.setIndex(0);
-            if(x2 < maxHeight - 45) pacman2.setX( x2 += 7);
+            if(map[pacman2.ConvertY()][pacman2.ConvertX() + 1] == 1) pacman2.setX( x2 += 7);
         }
         if(isKeyPressed(VK_A)){
             if(pacman2.getIndex() == 0) pacman2.setIndex(4);
             else pacman2.setIndex(0);
-            if(x2 > 45)pacman2.setX( x2 -= 7);
+            if(map[pacman2.ConvertY()][pacman2.ConvertX() - 1] == 1) pacman2.setX( x2 -= 7);
         }
     }
     public BitSet keyBits = new BitSet(256);

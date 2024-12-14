@@ -23,7 +23,6 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     int maxHeight = 600;
     int index1 = 0,index2=0;
     int x = 30,y = 560,x2=560,y2=30;
-    int lives = 3;
     ArrayList<Eating> eating = new ArrayList<Eating>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
@@ -32,7 +31,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
              //5
             "apple.png","blinky.png","pinky.png",
-            "heart.png", "Map.jpg"
+            "win.gif", "Map.jpg"
     };
     int[][]map = new int [][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -106,23 +105,25 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     public void PacEat(){
         for (int i = 0; i < eating.size(); i++) {
             if(pacman1.ConvertX() == eating.get(i).getX() && pacman1.ConvertY() == eating.get(i).getY()){
-                eating.remove(i--);
+                eating.remove(i);
                 score1++;
                 //handle sound
             }
             if(pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()){
-                eating.remove(i--);
+                eating.remove(i);
                 score2++;
                 //handle sound
             }
-            System.out.println(score1+" "+score2);
+            System.out.println("Pac1 Score: "+score1+" Pac2 Score:  "+score2);
         }
     }
-    public void winnerPlayer(){
+    public void theWinner(){
         if(eating.isEmpty()){
             if(score1 > score2){
+                System.out.println("The winner is PacMan 1");
                 // show that player1 is win
             }else{
+                System.out.println("The winner is PacMan 2");
 
             }
         }
@@ -141,6 +142,8 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
         handleKey();
         PacEat();
+        theWinner();
+        System.out.println(pacman1.getX()+" "+pacman2.getX());
     }
     public void addApples(){
         for (int i = 0; i < rows; i++) {
@@ -192,49 +195,52 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glPopMatrix();
         gl.glDisable(GL.GL_BLEND);
     }
-
     public void handleKey(){
-        if (isKeyPressed(VK_DOWN)){
-            if (pacman1.getIndex() == 0) pacman1.setIndex(3);
-            else pacman1.setIndex(0);
-            if (y > 30) pacman1.setY(y -= 5);
-        }
-        if(isKeyPressed(VK_UP)){
-            if (pacman1.getIndex() == 0) pacman1.setIndex(1);
-            else pacman1.setIndex(0);
-            if (y < maxHeight - 40) pacman1.setY(y += 5);
-        }
-        if(isKeyPressed(VK_RIGHT)){
-            if (pacman1.getIndex() == 0) pacman1.setIndex(2);
-            else pacman1.setIndex(0);
-            if (x < maxWidth - 40) pacman1.setX(x += 5);
-        }
-        if(isKeyPressed(VK_LEFT)){
-            if (pacman1.getIndex() == 0) pacman1.setIndex(4);
-            else pacman1.setIndex(0);
-            if (x > 30) pacman1.setX(x -= 5);
-        }
-        //for the PacMan 2
-        if(isKeyPressed(VK_W)){
-            if(pacman2.getIndex() == 0) pacman2.setIndex(1);
-            else pacman2.setIndex(0);
-            if(y2 < maxHeight -40) pacman2.setY( y2 += 5);
-        }
-        if(isKeyPressed(VK_S)){
-            if(pacman2.getIndex() == 0) pacman2.setIndex(3);
-            else pacman2.setIndex(0);
-            if(y2 > 30) pacman2.setY( y2 -= 5);
-        }
-        if(isKeyPressed(VK_D)){
-            if(pacman2.getIndex() == 0) pacman2.setIndex(2);
-            else pacman2.setIndex(0);
-            if(x2 < maxHeight -40) pacman2.setX( x2 += 5);
-        }
-        if(isKeyPressed(VK_A)){
-            if(pacman2.getIndex() == 0) pacman2.setIndex(4);
-            else pacman2.setIndex(0);
-            if(x2 > 30)pacman2.setX( x2 -= 5);
-        }
+
+            if (isKeyPressed(VK_DOWN)) {
+                if (pacman1.getIndex() == 0) pacman1.setIndex(3);
+                else pacman1.setIndex(0);
+                if (map[pacman1.ConvertY() - 1][pacman1.ConvertX()] == 1) pacman1.setY(y -= 7);
+            }
+            if (isKeyPressed(VK_UP)) {
+                if (pacman1.getIndex() == 0) pacman1.setIndex(1);
+                else pacman1.setIndex(0);
+                if (map[pacman1.ConvertY() + 1][pacman1.ConvertX()] == 1) pacman1.setY(y += 7);
+            }
+            if (isKeyPressed(VK_RIGHT)) {
+                if (pacman1.getIndex() == 0) pacman1.setIndex(2);
+                else pacman1.setIndex(0);
+                if (x < maxWidth - 45) {
+                    if (map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
+                }
+            }
+            if (isKeyPressed(VK_LEFT)) {
+                if (pacman1.getIndex() == 0) pacman1.setIndex(4);
+                else pacman1.setIndex(0);
+                if (map[pacman1.ConvertY()][pacman1.ConvertX() - 1] == 1) pacman1.setX(x -= 7);
+            }
+            //for the PacMan 2
+            if (isKeyPressed(VK_W)) {
+                if (pacman2.getIndex() == 0) pacman2.setIndex(1);
+                else pacman2.setIndex(0);
+                if (map[pacman2.ConvertY() + 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 += 7);
+            }
+            if (isKeyPressed(VK_S)) {
+                if (pacman2.getIndex() == 0) pacman2.setIndex(3);
+                else pacman2.setIndex(0);
+                if (map[pacman2.ConvertY() - 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 -= 7);
+            }
+            if (isKeyPressed(VK_D)) {
+                if (pacman2.getIndex() == 0) pacman2.setIndex(2);
+                else pacman2.setIndex(0);
+                if (map[pacman2.ConvertY()][pacman2.ConvertX() + 1] == 1) pacman2.setX(x2 += 7);
+            }
+            if (isKeyPressed(VK_A)) {
+                if (pacman2.getIndex() == 0) pacman2.setIndex(4);
+                else pacman2.setIndex(0);
+                if (map[pacman2.ConvertY()][pacman2.ConvertX() - 1] == 1) pacman2.setX(x2 -= 7);
+            }
+
     }
     public BitSet keyBits = new BitSet(256);
     @Override
