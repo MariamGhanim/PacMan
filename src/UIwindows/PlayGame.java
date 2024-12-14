@@ -21,8 +21,6 @@ public class PlayGame {
     }
 
     public static class GameRenderer implements GLEventListener {
-
-
         @Override
         public void init(GLAutoDrawable drawable) {
             GL gl = drawable.getGL();
