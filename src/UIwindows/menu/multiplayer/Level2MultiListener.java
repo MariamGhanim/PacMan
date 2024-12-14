@@ -1,20 +1,23 @@
 package UIwindows.menu.multiplayer;
-
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
 import texture.AnimListener;
 import texture.TextureReader;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 
 import static java.awt.event.KeyEvent.*;
 
@@ -92,6 +95,11 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
     GL gl;
+
+    public Level2MultiListener() {
+
+    }
+
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -138,24 +146,30 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
+    private JLabel scoreLabel;
+    public Level2MultiListener(JLabel scoreLabel) {
+        this.scoreLabel = scoreLabel;
+    }
+
 
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
-        DrawBackground();
+        gl.glDisable(GL.GL_DEPTH_TEST);
 
+        DrawBackground();
         DrawFood(gl);
-        //draw two pacman
+
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
         DrawSprite(ghost1.getX(), ghost1.getY(), ghost1.getIndex(), 0.5f);
         DrawSprite(ghost2.getX(), ghost2.getY(), ghost2.getIndex(), 0.5f);
-
         DrawSprite(ghost3.getX(), ghost3.getY(), ghost3.getIndex(), 0.5f);
-
         DrawSprite(ghost4.getX(), ghost4.getY(), ghost4.getIndex(), 0.5f);
+
+
         ghost1.moveRandomly();
         ghost2.moveRandomly();
         ghost3.moveRandomly();
@@ -163,9 +177,15 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
 
         handleKey();
         PacEat();
-        theWinner();
-        System.out.println(pacman1.getX()+" "+pacman2.getX());
+        scoreLabel.setText("PacMan 1: " + score1 + "  PacMan 2: " + score2);
+
+        gl.glPopMatrix();
+        System.out.println(pacman1.getX() + " " + pacman2.getX());
     }
+
+
+
+
     public void addApples(){
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
