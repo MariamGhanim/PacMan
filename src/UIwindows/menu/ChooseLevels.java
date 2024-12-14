@@ -67,7 +67,7 @@ public class ChooseLevels {
                 // Remove current components
                 gameWindow.getContentPane().removeAll();
                 // Open Level2
-                // Test
+                // Test 1
                 Level2.showLevel2(gameWindow);
             }
         });
