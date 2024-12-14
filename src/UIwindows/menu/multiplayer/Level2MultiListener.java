@@ -22,14 +22,9 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
 
     int maxWidth = 600;
     int maxHeight = 600;
-<<<<<<< HEAD
-    int index1 = 0,index2=0;
-    int x = 30,y = 560,x2=560,y2=30;
-=======
     int index1 = 0,index2=0,index3=6,index4=7,index5=9 ,index6=10;
     int x = 30,y = 560,x2=560,y2=30,x3=300,y3=300,x4=320,y4=300,x5=340,y5=300,x6=330,y6=330;
     int lives = 3;
->>>>>>> 0e658e2556d472d86dc56cfd376be7bc9f3d912d
     ArrayList<Eating> eating = new ArrayList<Eating>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
@@ -44,11 +39,8 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
             "apple.png","blinky.png","pinky.png",
-<<<<<<< HEAD
-            "win.gif", "Map.jpg"
-=======
             "heart.png","clyde.png","Ghosts.png", "Map.jpg"
->>>>>>> 0e658e2556d472d86dc56cfd376be7bc9f3d912d
+
     };
 
     int[][]map = new int [][]{
