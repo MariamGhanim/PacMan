@@ -147,7 +147,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
             for (int j = 0; j < column; j++) {
                 if(i % 2 ==0 && j % 2 == 0){
                     if (map[i][j] == 1) {
-                        eating.add(new Eating(j, i));
+                        eating.add(new Eating(j, i,5));
                     }
                 }
             }

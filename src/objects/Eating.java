@@ -3,8 +3,8 @@ package objects;
 public class Eating {
     public int x, y;
     static float scale = 0.5f;
-    int index = 5;
-    public Eating(int x, int y){
+    int index ;
+    public Eating(int x, int y, int index){
         this.x = x;
         this.y=y;
         this.index = index;
