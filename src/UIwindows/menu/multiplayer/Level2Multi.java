@@ -1,4 +1,4 @@
-package UIwindows.menu.multiplayer;
+                         package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -8,18 +8,17 @@ import javax.media.opengl.GLCanvas;
 import javax.swing.*;
 import java.awt.*;
 
-public class LevelMulti2 extends JFrame {
+public class Level2Multi extends JFrame {
     public static void main(String[] args) {
-        new LevelMulti2();
+        new Level2Multi();
     }
 
 
-    public LevelMulti2() {
+    public Level2Multi() {
         GLCanvas glcanvas;
         Animator animator;
 
-        AnimListener listener = new LevelMulti2Listener();
-
+        AnimListener listener = new LevelMulti1Listener();
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
@@ -28,7 +27,7 @@ public class LevelMulti2 extends JFrame {
         animator.add(glcanvas);
         animator.start();
 
-        setTitle("Level 2 MultiPlayer");
+        setTitle("Level 1 MultiPlayer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
