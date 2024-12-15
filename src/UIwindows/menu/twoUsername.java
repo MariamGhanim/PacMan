@@ -44,14 +44,13 @@ public class twoUsername {
         nameField2.setForeground(Color.BLACK);
         nameField2.setBorder(new LineBorder(Color.BLACK, 2, true));
 
-        // Button to submit the usernames
+
         JButton submitButton = new JButton("Next");
         submitButton.setFont(new Font("Arial", Font.PLAIN, 20));
         submitButton.setBackground(Color.GRAY);
         submitButton.setForeground(Color.WHITE);
         submitButton.setFocusPainted(false);
 
-        // Add action listener to the submit button
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -59,14 +58,8 @@ public class twoUsername {
                 userName2 = nameField2.getText();
                 if (!userName1.isEmpty() && !userName2.isEmpty()) {
                     JOptionPane.showMessageDialog(gameWindow, "Player 1: " + userName1 + "\nPlayer 2: " + userName2);
-
-                    // Hide the current username input panel
                     inputPanel.setVisible(false);
-
-                    // Remove the back button panel before transitioning to the levels screen
                     gameWindow.getContentPane().remove(backButtonPanel);
-
-                    // Show the levels screen after the usernames are saved
                     ChooseMpLevels.showMpLevels(gameWindow); // Call the levels class to show the next screen
                 } else {
                     JOptionPane.showMessageDialog(gameWindow, "Please enter valid names for both players.");
@@ -74,7 +67,7 @@ public class twoUsername {
             }
         });
 
-        // Add components to the input panel using GridBagLayout
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         inputPanel.add(nameLabel1, gbc);
@@ -102,18 +95,9 @@ public class twoUsername {
         backButton.setForeground(Color.WHITE);
 
         //  action listener to the back button
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //  back to the previous screen (Start screen or username screen)
-                gameWindow.setVisible(false);  // Hide the current window
-                JFrame startWindow = new JFrame("Start or Exit");
-                new choosePlayers().showchoosePlayers(startWindow);
-                startWindow.setSize(800, 600);
-                startWindow.setResizable(true);
-                startWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                startWindow.setVisible(true);
-            }
+        backButton.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            choosePlayers.showchoosePlayers(gameWindow);
         });
 
         backButtonPanel.add(backButton, BorderLayout.WEST);
@@ -122,7 +106,6 @@ public class twoUsername {
         gameWindow.getContentPane().add(canvas, BorderLayout.NORTH);
         gameWindow.revalidate();
         gameWindow.repaint();
-        new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
 
         gameWindow.setSize(800, 600);
         gameWindow.setLocationRelativeTo(null);//علشان تظهر في نص الشاشه
