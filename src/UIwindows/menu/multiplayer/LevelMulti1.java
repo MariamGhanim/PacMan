@@ -19,7 +19,7 @@ public class LevelMulti1 extends JFrame {
     public LevelMulti1() {
         GLCanvas glcanvas;
         Animator animator;
-        scoreLabel = new JLabel("PacMan 1: 0");
+        scoreLabel = new JLabel("PacMan 1: 0 PacMan2:0");
         scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 24));
         scoreLabel.setForeground(Color.WHITE);
         scoreLabel.setBackground(Color.BLACK);
