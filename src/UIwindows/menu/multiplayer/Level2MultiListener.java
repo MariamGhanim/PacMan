@@ -39,7 +39,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
             "apple.png","blinky.png","pinky.png",
-            "heart.png","clyde.png","Ghosts.png", "Map.jpg"
+             "heart.png","clyde.png","Ghosts.png", "Map.jpg"
 
     };
 
@@ -150,11 +150,10 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         //draw two pacman
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
+
         DrawSprite(ghost1.getX(), ghost1.getY(), ghost1.getIndex(), 0.5f);
         DrawSprite(ghost2.getX(), ghost2.getY(), ghost2.getIndex(), 0.5f);
-
         DrawSprite(ghost3.getX(), ghost3.getY(), ghost3.getIndex(), 0.5f);
-
         DrawSprite(ghost4.getX(), ghost4.getY(), ghost4.getIndex(), 0.5f);
         ghost1.moveRandomly();
         ghost2.moveRandomly();
