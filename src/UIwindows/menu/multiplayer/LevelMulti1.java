@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LevelMulti1 extends JFrame {
-    private JLabel scoreLabel;
+
 
     public static void main(String[] args) {
         new LevelMulti1();
@@ -19,16 +19,8 @@ public class LevelMulti1 extends JFrame {
     public LevelMulti1() {
         GLCanvas glcanvas;
         Animator animator;
-        scoreLabel = new JLabel("PacMan 1: 0");
-        scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 24));
-        scoreLabel.setForeground(Color.WHITE);
-        scoreLabel.setBackground(Color.BLACK);
-        scoreLabel.setOpaque(true);
-        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        scoreLabel.setVerticalAlignment(SwingConstants.CENTER);
-        this.getContentPane().add(scoreLabel, BorderLayout.NORTH);
 
-        AnimListener listener = new LevelMulti1Listener(scoreLabel);
+        AnimListener listener = new LevelMulti1Listener();
 
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);

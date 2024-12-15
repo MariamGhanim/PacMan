@@ -1,5 +1,6 @@
 package UIwindows.menu.multiplayer;
 
+import com.sun.opengl.util.GLUT;
 import objects.Eating;
 import objects.Pacman;
 import texture.AnimListener;
@@ -27,7 +28,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     ArrayList<Eating> eat = new ArrayList<Eating>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
-    int score1 = 0,score2 = 0;
+    int score = 0,level=1;
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
@@ -81,13 +82,32 @@ int rows = map.length;
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
     GL gl;
-    private JLabel scoreLabel;
-    public LevelMulti1Listener(JLabel scoreLabel) {
-        this.scoreLabel = scoreLabel;
-    }
+
+
     public LevelMulti1Listener() {
 
     }
+
+    public void UpdateScoreAndLevel(GL gl) {
+        // إعدادات المصفوفة
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glPushAttrib(GL.GL_CURRENT_BIT);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+        GLUT glut = new GLUT();
+        gl.glPushMatrix();
+        gl.glRasterPos2d(-0.2, 0.95); // النص الخاص بـ Score
+        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
+                "Score: " + score);
+        gl.glRasterPos2d(-0.9, 0.95); // النص الخاص بـ Level
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+        gl.glPopMatrix();
+        gl.glPopAttrib();
+        gl.glEnable(GL.GL_TEXTURE_2D);
+    }
+
 
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
@@ -130,9 +150,9 @@ int rows = map.length;
         for (int i = 0; i < eat.size(); i++) {
             if(pacman1.ConvertX()== eat.get(i).getX() && pacman1.ConvertY() == eat.get(i).getY()){
                 eat.remove(i);
-                score1++;
+                score++;
                 System.out.println("I am eating");
-                System.out.println("score: "+score1);
+                System.out.println("score: "+ score);
                 //handle sound
             }
 
@@ -145,16 +165,14 @@ int rows = map.length;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-
-
         DrawBackground();
+        UpdateScoreAndLevel(gl);
         DrawFood(gl);
         //draw two pacman
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
         handleKey();
         handleEat();
-        scoreLabel.setText("PacMan: " + score1 );
 
         gl.glPopMatrix();
 

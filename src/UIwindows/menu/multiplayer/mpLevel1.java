@@ -13,17 +13,7 @@ public class mpLevel1 extends JFrame {
         GLCanvas glcanvas;
         FPSAnimator animator;
 
-
-        JLabel scoreLabel = new JLabel("PacMan: 0");
-        scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 24));
-        scoreLabel.setForeground(Color.WHITE);
-        scoreLabel.setBackground(Color.BLACK);
-        scoreLabel.setOpaque(true);
-        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        scoreLabel.setVerticalAlignment(SwingConstants.CENTER);
-
-
-        AnimListener listener = new LevelMulti1Listener(scoreLabel);
+        AnimListener listener = new LevelMulti1Listener();
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
@@ -33,7 +23,6 @@ public class mpLevel1 extends JFrame {
         animator.start();
 
         gameWindow.getContentPane().removeAll();
-        gameWindow.getContentPane().add(scoreLabel, BorderLayout.NORTH);
         gameWindow.getContentPane().add(glcanvas, BorderLayout.CENTER);
 
 

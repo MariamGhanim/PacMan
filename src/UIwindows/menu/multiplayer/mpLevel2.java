@@ -23,7 +23,7 @@ public class mpLevel2 extends JFrame {
         scoreLabel.setVerticalAlignment(SwingConstants.CENTER);
 
 
-        AnimListener listener = new Level2MultiListener(scoreLabel);
+        AnimListener listener = new Level2MultiListener();
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);

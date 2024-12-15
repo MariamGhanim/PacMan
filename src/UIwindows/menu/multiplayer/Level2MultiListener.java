@@ -1,4 +1,5 @@
 package UIwindows.menu.multiplayer;
+import com.sun.opengl.util.GLUT;
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
@@ -22,6 +23,8 @@ import java.util.Set;
 
 
 import static java.awt.event.KeyEvent.*;
+import static javax.media.opengl.GL.GL_CURRENT_BIT;
+import static javax.media.opengl.GL.GL_TEXTURE_2D;
 
 public class Level2MultiListener extends AnimListener implements KeyListener , GLEventListener {
 
@@ -38,7 +41,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     Ghost ghost3 = new Ghost(x5, y5, index5);
 
     Ghost ghost4 = new Ghost(x6, y6, index6);
-    int score1 = 0,score2 = 0;
+    int score1 = 0,score2 = 0,level=2;
 
 
     static String[] textureNames = {
@@ -105,6 +108,26 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     public Level2MultiListener() {
 
     }
+    public void UpdateScoreAndLevel(GL gl) {
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glPushAttrib(GL.GL_CURRENT_BIT);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        GLUT glut = new GLUT();
+        gl.glPushMatrix();
+        gl.glRasterPos2d(-0.2, 0.95);
+        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
+                "Score1: " + score1 + " |  Score2: " + score2);
+
+        gl.glRasterPos2d(-0.9, 0.95);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+
+        gl.glPopMatrix();
+        gl.glPopAttrib();
+        gl.glEnable(GL.GL_TEXTURE_2D);
+    }
+
 
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
@@ -153,10 +176,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
-    private JLabel scoreLabel;
-    public Level2MultiListener(JLabel scoreLabel) {
-        this.scoreLabel = scoreLabel;
-    }
+
 
     @Override
     public void display(GLAutoDrawable gld) {
@@ -168,7 +188,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         // رسم الخلفية والطعام
         DrawBackground();
         DrawFood(gl);
-
+        UpdateScoreAndLevel(gl);
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
         DrawSprite(ghost1.getX(), ghost1.getY(), ghost1.getIndex(), 0.5f);
@@ -178,13 +198,13 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
 
         handleKey();
         PacEat();
-        scoreLabel.setText("PacMan 1: " + score1 + "  PacMan 2: " + score2);
+
 
         gl.glPopMatrix();
         System.out.println(pacman1.getX() + " " + pacman2.getX());
     }
 
-    private static Set<String> walls = new HashSet<>();
+
 
 
 
