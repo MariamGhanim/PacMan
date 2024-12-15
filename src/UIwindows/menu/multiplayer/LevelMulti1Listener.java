@@ -31,6 +31,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     int index1 = 0,index2=0;
     int x = 40,y = 540,x2=555,y2=60;
     ArrayList<Eating> eat = new ArrayList<Eating>();
+    ArrayList<Eating> strawberry = new ArrayList<Eating>();
     ArrayList<Ghost> ghost = new ArrayList<>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
@@ -184,7 +185,7 @@ int rows = map.length;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 if(i % 2 == 0 && j % 3 ==0) {
-                    if(map[i][j] == 1 && i == j) eat.add(new Eating(j,i,5));
+                    if(map[i][j] == 1 && i == j) strawberry.add(new Eating(j,i,5));
                     else if (map[i][j] == 1) {
                         eat.add(new Eating(j, i,6));
                     }
@@ -194,7 +195,9 @@ int rows = map.length;
     }
     public void DrawFood(GL gl){
         for(Eating e : eat)
-            DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.8f);
+            DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),1.0f);
+        for(Eating s: strawberry)
+            DrawSprite(s.ConvertX(),s.ConvertY(),s.getIndex(),0.6f);
     }
     public void handleEat(){
         for (int i = 0; i < eat.size(); i++) {
