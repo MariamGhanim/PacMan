@@ -2,6 +2,7 @@ package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.GLUT;
 import objects.Eating;
+import objects.Ghost;
 import objects.Pacman;
 import texture.AnimListener;
 import texture.TextureReader;
@@ -30,13 +31,17 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     int index1 = 0,index2=0;
     int x = 40,y = 540,x2=555,y2=60;
     ArrayList<Eating> eat = new ArrayList<Eating>();
+    ArrayList<Ghost> ghost = new ArrayList<>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
     int score1 = 0,score2=0,level=1;
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
-            "strawberry.png","dot.png", "pause.png","Map3.jpg"
+            "strawberry.png","dot.png",
+            //7
+            "blinky.png","ghost.gif","pinky.png","clyde.png",
+            "pause.png","Map3.jpg"
     };
     int[][] map = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -132,8 +137,50 @@ int rows = map.length;
             }
         }
         addFood();
+        ghost.add(new Ghost(300, 400, 7));
+        ghost.add(new Ghost(575, 575, 8));
+        ghost.add(new Ghost(70, 70, 9));
+        ghost.add(new Ghost(500, 100, 10));
+        for (Ghost g : ghost) {
+            g.moveRandom();
+        }
     }
-
+    private void handelGhostMove() {
+        for (Ghost g : ghost) {
+            switch (g.getDirection()) {
+                case -1 -> {
+                }
+                case 0 -> {
+                    if (map[g.ConvertY() - 1][g.ConvertX()] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveUP();
+                }
+                case 1 -> {
+                    if (map[g.ConvertY() + 1][g.ConvertX()] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveDown();
+                }
+                case 2 -> {
+                    if (map[g.ConvertY()][g.ConvertX() + 1] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveRight();
+                }
+                case 3 -> {
+                    if (map[g.ConvertY()][g.ConvertX() - 1] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveLeft();
+                }
+            }
+        }
+    }
     public void addFood(){
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
@@ -158,14 +205,14 @@ int rows = map.length;
                 eat.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("src/Assets/sounds/pacman_eatfruit.wav");
+                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()) {
                 eat.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("src/Assets/sounds/pacman_eatfruit.wav");
+                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -174,7 +221,26 @@ int rows = map.length;
             }
         }
     }
+    public void theWinner(){
+        if(eat.isEmpty()){
+            if(score1 > score2){
+                // show that player1 is win
+            }else{
 
+            }
+        }
+    }
+    public void handleTheLose(){
+        for(int i = 0; i < ghost.size();i++){
+            if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
+                System.out.println("PacMan 2 win");
+                //stop the game
+            }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
+                System.out.println("PacMan 1 win");
+                //stop the game
+            }
+        }
+    }
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
@@ -187,16 +253,23 @@ int rows = map.length;
         //draw two pacman
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
+        drawGhost();
+        handelGhostMove();
         handleKey();
         handleEat();
         if (isPaused) {
             DrawSprite(maxWidth / 2, maxHeight / 2, 7, 2.0f);
             return;
         }
-
-        gl.glPopMatrix();
-
+        handleTheLose();
+        theWinner();
     }
+    private void drawGhost() {
+        for (Ghost g : ghost) {
+            DrawSprite(g.getX(),g.getY(), g.getIndex(), g.getScale());
+        }
+    }
+
     public void DrawSprite(int x, int y, int index, float scale) {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[index]);

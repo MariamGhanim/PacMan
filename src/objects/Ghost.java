@@ -1,6 +1,7 @@
 package objects;
 
 import java.util.Random;
+
 public class Ghost {
     Random random = new Random();
     public int x, y,index;
@@ -21,9 +22,9 @@ public class Ghost {
         this.index = index;
     }
 
-    public void randMove() {
-        int sw = random.nextInt(4);
-        switch (sw) {
+    public void moveRandom() {
+        int dir = random.nextInt(4);
+        switch (dir) {
             case 0 -> {
                 ghostdir = 0;
             }

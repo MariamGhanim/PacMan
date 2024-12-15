@@ -137,7 +137,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 eating.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("src/Assets/sounds/pacman_eatfruit.wav");
+                playSound("PAcMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()) {
