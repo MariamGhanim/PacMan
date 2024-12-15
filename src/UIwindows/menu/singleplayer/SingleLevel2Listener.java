@@ -1,6 +1,8 @@
 package UIwindows.menu.singleplayer;
+
 import com.sun.opengl.util.GLUT;
 import texture.TextureReader;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
@@ -10,11 +12,11 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import static javax.media.opengl.GL.GL_CURRENT_BIT;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
 
-
-public class  SingleLevel1Listener extends BaseJogl {
+public class SingleLevel2Listener extends BaseJogl {
 
     ArrayList<Points> PointsList = new ArrayList<>();
     ArrayList<Points> FruitsList = new ArrayList<>();
@@ -30,8 +32,8 @@ public class  SingleLevel1Listener extends BaseJogl {
             "pacman/b1.png", "pacman/b2.png", "pacman/b3.png",
             "extra/dot.png", "extra/apple.png", "Ready.png",
             "GameOver.png", "Win.png", "menu.jpg",
-            "level1.png", "ghosts/blinky.png", "ghosts/pinky.png",
-            "ghosts/clyde.png", "Background.jpeg"
+            "level2.png", "ghosts/blinky.png", "ghosts/pinky.png",
+            "ghosts/clyde.png", "blue_ghost.png"  , "Background.jpeg"
     };
 
 
@@ -224,10 +226,11 @@ public class  SingleLevel1Listener extends BaseJogl {
     }
 
 
-    PacObject SingleLevel1Listener = new PacObject(19, 1);
+    PacObject SingleLevel2Listener = new PacObject(19, 1);
     PacObject[] Enemies = {
             new PacObject(19, 20, 37 + (int) (Math.random() * 4)),
             new PacObject(20, 30, 37 + (int) (Math.random() * 4)),
+            new PacObject(21, 40, 37 + (int) (Math.random() * 4)),
             new PacObject(21, 40, 37 + (int) (Math.random() * 4)),
     };
     int[] Texts = {14, 15, 16};
@@ -238,7 +241,7 @@ public class  SingleLevel1Listener extends BaseJogl {
     private static final int BUFFER_SIZE = 4096, WIDTH = 100, Height = 100;
     private final double SPEED = 0.25;
     private boolean StartGame = true , GameOver = false; // انا عدلت هنا
-    int keyCode, Level = 1, Angle = 0, Score = 0, FinalScore = 780, FaceAnimations = 0, Face = 0, n = 0;
+    int keyCode, Level = 2, Angle = 0, Score = 0, FinalScore = 780, FaceAnimations = 0, Face = 0, n = 0;
 
     private void ResetPoints() {
         PointsList.clear();
@@ -280,20 +283,21 @@ public class  SingleLevel1Listener extends BaseJogl {
 
         PlaySound("Assets\\sounds\\pacman_beginning.wav", 0);
 
-        StartGame = true; // انا عدلت هنا
+        StartGame = true;
         GameOver = false;
 
-        SingleLevel1Listener.index = 1;
+        SingleLevel2Listener.index = 1;
         Angle = 0;
         FaceAnimations = 0;
         Face = 0;
         Score = 0;
 
-        SingleLevel1Listener.x = PointsList.get(SingleLevel1Listener.index).getX() - 5;
-        SingleLevel1Listener.y = PointsList.get(SingleLevel1Listener.index).getY();
+        SingleLevel2Listener.x = PointsList.get(SingleLevel2Listener.index).getX() - 5;
+        SingleLevel2Listener.y = PointsList.get(SingleLevel2Listener.index).getY();
 
         Enemies[0].index = 20;
         Enemies[1].index = 30;
+        Enemies[2].index = 40;
         Enemies[2].index = 40;
         for (PacObject E : Enemies) {
             E.x = PointsList.get(E.index).getX();
@@ -330,21 +334,21 @@ public class  SingleLevel1Listener extends BaseJogl {
                     DrawTexture(gl, t.getIndex(), new double[]{0, 0.07}, new double[]{0.17, 0.13});
 
             for (Points P : PointsList) {
-                if (SingleLevel1Listener.x == P.getX() && SingleLevel1Listener.y == P.getY() && !P.isChecked()) {
+                if (SingleLevel2Listener.x == P.getX() && SingleLevel2Listener.y == P.getY() && !P.isChecked()) {
                     PlaySound("Assets\\sounds\\pacman_chomp.wav", -1);
                     Score += 10;
                     P.setChecked(true);
                 }
             }
             for (Points F : FruitsList) {
-                if (SingleLevel1Listener.x == F.getX() && SingleLevel1Listener.y == F.getY() && !F.isChecked()) {
+                if (SingleLevel2Listener.x == F.getX() && SingleLevel2Listener.y == F.getY() && !F.isChecked()) {
                     PlaySound("Assets\\sounds\\pacman_eatfruit.wav", -1);
                     Score += 20;
                     F.setChecked(true);
                 }
             }
 
-            DrawTexture(gl, Face + FaceAnimations % 3, new double[]{SingleLevel1Listener.x / (WIDTH / 2.0) - 0.9, SingleLevel1Listener.y / (Height / 2.0) - 0.9}, new double[]{0.05, 0.05});
+            DrawTexture(gl, Face + FaceAnimations % 3, new double[]{SingleLevel2Listener.x / (WIDTH / 2.0) - 0.9, SingleLevel2Listener.y / (Height / 2.0) - 0.9}, new double[]{0.05, 0.05});
 
             for (PacObject E : Enemies) {
                 DrawTexture(gl, E.texture, new double[]{E.x / (WIDTH / 2.0) - 0.9, E.y / (Height / 2.0) - 0.9}, new double[]{0.05, 0.05});
@@ -417,9 +421,9 @@ public class  SingleLevel1Listener extends BaseJogl {
 
     private boolean killRange() {
         return (
-                (Math.abs(SingleLevel1Listener.y - Enemies[0].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[0].x) <= 5) ||
-                        (Math.abs(SingleLevel1Listener.y - Enemies[1].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[1].x) <= 5) ||
-                        (Math.abs(SingleLevel1Listener.y - Enemies[2].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[2].x) <= 5)
+                (Math.abs(SingleLevel2Listener.y - Enemies[0].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[0].x) <= 5) ||
+                        (Math.abs(SingleLevel2Listener.y - Enemies[1].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[1].x) <= 5) ||
+                        (Math.abs(SingleLevel2Listener.y - Enemies[2].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[2].x) <= 5)
         );
     }
 
@@ -430,26 +434,12 @@ public class  SingleLevel1Listener extends BaseJogl {
             KeyList.add(keyCode);
         }
     }
-
     public void mouseClicked(MouseEvent e) {
-//        double x = e.getX(), y = e.getY();
-//
-//        if ((355 < x && x < 485) && !StartGame) {
-//            StartGame = true;
-//
-//            if (539 < y && y < 597)
-//                Level = 1;
-//            else if (624 < y && y < 680)
-//                Level = 2;
-//            else if (708 < y && y < 766)
-//                Level = 3;
-//            else
-//                StartGame = false;
-        //}
+        double x = e.getX(), y = e.getY();
 
-        if (!StartGame) {
+        if ((355 < x && x < 485) && !StartGame) {
             StartGame = true;
-            Level = 1;  // تعيين المستوى الأول مباشرة
+            Level = 2;
         }
     }
 
@@ -458,56 +448,56 @@ public class  SingleLevel1Listener extends BaseJogl {
     }
 
     private void handleKeyPress() {
-        int T = PointsList.get(SingleLevel1Listener.index).getTop();
-        int B = PointsList.get(SingleLevel1Listener.index).getBottom();
-        int L = PointsList.get(SingleLevel1Listener.index).getLeft();
-        int R = PointsList.get(SingleLevel1Listener.index).getRight();
+        int T = PointsList.get(SingleLevel2Listener.index).getTop();
+        int B = PointsList.get(SingleLevel2Listener.index).getBottom();
+        int L = PointsList.get(SingleLevel2Listener.index).getLeft();
+        int R = PointsList.get(SingleLevel2Listener.index).getRight();
 
         if (isKeyPressed(38) && T != -1) {
-            if (PointsList.get(T).getY() == SingleLevel1Listener.y) {
+            if (PointsList.get(T).getY() == SingleLevel2Listener.y) {
                 checkN();
-                SingleLevel1Listener.index = T;
+                SingleLevel2Listener.index = T;
             } else {
-                SingleLevel1Listener.y += SPEED;
+                SingleLevel2Listener.y += SPEED;
                 Face = 6;
                 FaceAnimations++;
             }
         } else if (isKeyPressed(40) && B != -1) {
-            if (PointsList.get(B).getY() == SingleLevel1Listener.y) {
+            if (PointsList.get(B).getY() == SingleLevel2Listener.y) {
                 checkN();
-                SingleLevel1Listener.index = B;
+                SingleLevel2Listener.index = B;
             } else {
-                SingleLevel1Listener.y -= SPEED;
+                SingleLevel2Listener.y -= SPEED;
                 Face = 9;
                 FaceAnimations++;
             }
         } else if (isKeyPressed(37) && L != -1) {
             if (L == -2) {
-                SingleLevel1Listener.index = 18;
-                SingleLevel1Listener.x = PointsList.get(SingleLevel1Listener.index).getX();
-                SingleLevel1Listener.y = PointsList.get(SingleLevel1Listener.index).getY();
+                SingleLevel2Listener.index = 18;
+                SingleLevel2Listener.x = PointsList.get(SingleLevel2Listener.index).getX();
+                SingleLevel2Listener.y = PointsList.get(SingleLevel2Listener.index).getY();
                 return;
             }
-            if (PointsList.get(L).getX() == SingleLevel1Listener.x) {
+            if (PointsList.get(L).getX() == SingleLevel2Listener.x) {
                 checkN();
-                SingleLevel1Listener.index = L;
+                SingleLevel2Listener.index = L;
             } else {
-                SingleLevel1Listener.x -= SPEED;
+                SingleLevel2Listener.x -= SPEED;
                 Face = 3;
                 FaceAnimations++;
             }
         } else if (isKeyPressed(39) && R != -1) {
             if (R == -2) {
-                SingleLevel1Listener.index = 66;
-                SingleLevel1Listener.x = PointsList.get(SingleLevel1Listener.index).getX();
-                SingleLevel1Listener.y = PointsList.get(SingleLevel1Listener.index).getY();
+                SingleLevel2Listener.index = 66;
+                SingleLevel2Listener.x = PointsList.get(SingleLevel2Listener.index).getX();
+                SingleLevel2Listener.y = PointsList.get(SingleLevel2Listener.index).getY();
                 return;
             }
-            if (PointsList.get(R).getX() == SingleLevel1Listener.x) {
+            if (PointsList.get(R).getX() == SingleLevel2Listener.x) {
                 checkN();
-                SingleLevel1Listener.index = R;
+                SingleLevel2Listener.index = R;
             } else {
-                SingleLevel1Listener.x += SPEED;
+                SingleLevel2Listener.x += SPEED;
                 Face = 0;
                 FaceAnimations++;
             }
