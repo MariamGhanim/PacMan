@@ -1,20 +1,25 @@
 package UIwindows.menu.multiplayer;
-
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
 import texture.AnimListener;
 import texture.TextureReader;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
+
 
 import static java.awt.event.KeyEvent.*;
 
@@ -23,17 +28,18 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     int maxWidth = 600;
     int maxHeight = 600;
     int index1 = 0,index2=0,index3=6,index4=7,index5=9 ,index6=10;
-    int x = 30,y = 560,x2=560,y2=30,x3=300,y3=300,x4=320,y4=300,x5=340,y5=300,x6=330,y6=330;
+    int x = 30,y = 560,x2=560,y2=30,x3=300,y3=300,x4=300,y4=300,x5=340,y5=300,x6=330,y6=300;
     int lives = 3;
     ArrayList<Eating> eating = new ArrayList<Eating>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
-    int score1 = 0,score2 = 0;
     Ghost ghost1 = new Ghost(x3, y3, index3);
     Ghost ghost2 = new Ghost(x4, y4, index4);
     Ghost ghost3 = new Ghost(x5, y5, index5);
 
     Ghost ghost4 = new Ghost(x6, y6, index6);
+    int score1 = 0,score2 = 0;
+
 
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
@@ -87,11 +93,19 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
     };
+
+
     int rows = map.length;
     int column = map[0].length;
+
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
     GL gl;
+
+    public Level2MultiListener() {
+
+    }
+
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -112,6 +126,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         }
         addApples();
     }
+
     public void PacEat(){
         for (int i = 0; i < eating.size(); i++) {
             if(pacman1.ConvertX() == eating.get(i).getX() && pacman1.ConvertY() == eating.get(i).getY()){
@@ -138,16 +153,22 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
+    private JLabel scoreLabel;
+    public Level2MultiListener(JLabel scoreLabel) {
+        this.scoreLabel = scoreLabel;
+    }
 
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
-        DrawBackground();
+        gl.glDisable(GL.GL_DEPTH_TEST);
 
+        // رسم الخلفية والطعام
+        DrawBackground();
         DrawFood(gl);
-        //draw two pacman
+
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
 
@@ -155,30 +176,40 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         DrawSprite(ghost2.getX(), ghost2.getY(), ghost2.getIndex(), 0.5f);
         DrawSprite(ghost3.getX(), ghost3.getY(), ghost3.getIndex(), 0.5f);
         DrawSprite(ghost4.getX(), ghost4.getY(), ghost4.getIndex(), 0.5f);
-        ghost1.moveRandomly();
-        ghost2.moveRandomly();
-        ghost3.moveRandomly();
-        ghost4.moveRandomly();
 
         handleKey();
         PacEat();
-        theWinner();
-        System.out.println(pacman1.getX()+" "+pacman2.getX());
+        scoreLabel.setText("PacMan 1: " + score1 + "  PacMan 2: " + score2);
+
+        gl.glPopMatrix();
+        System.out.println(pacman1.getX() + " " + pacman2.getX());
     }
-    public void addApples(){
+
+    private static Set<String> walls = new HashSet<>();
+
+
+
+
+    public void addApples() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
-                if(i % 2 ==0 && j % 2 == 0){
+                if (i % 2 == 0 && j % 2 == 0) {
                     if (map[i][j] == 1) {
-                        eating.add(new Eating(j, i,5));
+
+                        eating.add(new Eating(j, i, 5));
+
+
                     }
                 }
             }
         }
+
+
     }
+
     public void DrawFood(GL gl){
-       for(Eating e : eating)
-           DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.4f);
+        for(Eating e : eating)
+            DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.4f);
     }
     public void DrawSprite(int x, int y, int index, float scale) {
         gl.glEnable(GL.GL_BLEND);
@@ -217,51 +248,54 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
     public void handleKey(){
 
-            if (isKeyPressed(VK_DOWN)) {
-                if (pacman1.getIndex() == 0) pacman1.setIndex(3);
-                else pacman1.setIndex(0);
-                if (map[pacman1.ConvertY() - 1][pacman1.ConvertX()] == 1) pacman1.setY(y -= 7);
+        if (isKeyPressed(VK_DOWN)) {
+            if (pacman1.getIndex() == 0) pacman1.setIndex(3);
+            else pacman1.setIndex(0);
+            if (map[pacman1.ConvertY() - 1][pacman1.ConvertX()] == 1) pacman1.setY(y -= 7);
+        }
+        if (isKeyPressed(VK_UP)) {
+            if (pacman1.getIndex() == 0) pacman1.setIndex(1);
+            else pacman1.setIndex(0);
+            if (map[pacman1.ConvertY() + 1][pacman1.ConvertX()] == 1) pacman1.setY(y += 7);
+        }
+        if (isKeyPressed(VK_RIGHT)) {
+            if (pacman1.getIndex() == 0) pacman1.setIndex(2);
+            else pacman1.setIndex(0);
+            if (x < maxWidth - 45) {
+                if (map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
             }
-            if (isKeyPressed(VK_UP)) {
-                if (pacman1.getIndex() == 0) pacman1.setIndex(1);
-                else pacman1.setIndex(0);
-                if (map[pacman1.ConvertY() + 1][pacman1.ConvertX()] == 1) pacman1.setY(y += 7);
-            }
-            if (isKeyPressed(VK_RIGHT)) {
-                if (pacman1.getIndex() == 0) pacman1.setIndex(2);
-                else pacman1.setIndex(0);
-                if (x < maxWidth - 45) {
-                    if (map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
-                }
-            }
-            if (isKeyPressed(VK_LEFT)) {
-                if (pacman1.getIndex() == 0) pacman1.setIndex(4);
-                else pacman1.setIndex(0);
-                if (map[pacman1.ConvertY()][pacman1.ConvertX() - 1] == 1) pacman1.setX(x -= 7);
-            }
-            //for the PacMan 2
-            if (isKeyPressed(VK_W)) {
-                if (pacman2.getIndex() == 0) pacman2.setIndex(1);
-                else pacman2.setIndex(0);
-                if (map[pacman2.ConvertY() + 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 += 7);
-            }
-            if (isKeyPressed(VK_S)) {
-                if (pacman2.getIndex() == 0) pacman2.setIndex(3);
-                else pacman2.setIndex(0);
-                if (map[pacman2.ConvertY() - 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 -= 7);
-            }
-            if (isKeyPressed(VK_D)) {
-                if (pacman2.getIndex() == 0) pacman2.setIndex(2);
-                else pacman2.setIndex(0);
-                if (map[pacman2.ConvertY()][pacman2.ConvertX() + 1] == 1) pacman2.setX(x2 += 7);
-            }
-            if (isKeyPressed(VK_A)) {
-                if (pacman2.getIndex() == 0) pacman2.setIndex(4);
-                else pacman2.setIndex(0);
-                if (map[pacman2.ConvertY()][pacman2.ConvertX() - 1] == 1) pacman2.setX(x2 -= 7);
-            }
+        }
+        if (isKeyPressed(VK_LEFT)) {
+            if (pacman1.getIndex() == 0) pacman1.setIndex(4);
+            else pacman1.setIndex(0);
+            if (map[pacman1.ConvertY()][pacman1.ConvertX() - 1] == 1) pacman1.setX(x -= 7);
+        }
+        //for the PacMan 2
+        if (isKeyPressed(VK_W)) {
+            if (pacman2.getIndex() == 0) pacman2.setIndex(1);
+            else pacman2.setIndex(0);
+            if (map[pacman2.ConvertY() + 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 += 7);
+        }
+        if (isKeyPressed(VK_S)) {
+            if (pacman2.getIndex() == 0) pacman2.setIndex(3);
+            else pacman2.setIndex(0);
+            if (map[pacman2.ConvertY() - 1][pacman2.ConvertX()] == 1) pacman2.setY(y2 -= 7);
+        }
+        if (isKeyPressed(VK_D)) {
+            if (pacman2.getIndex() == 0) pacman2.setIndex(2);
+            else pacman2.setIndex(0);
+            if (map[pacman2.ConvertY()][pacman2.ConvertX() + 1] == 1) pacman2.setX(x2 += 7);
+        }
+        if (isKeyPressed(VK_A)) {
+            if (pacman2.getIndex() == 0) pacman2.setIndex(4);
+            else pacman2.setIndex(0);
+            if (map[pacman2.ConvertY()][pacman2.ConvertX() - 1] == 1) pacman2.setX(x2 -= 7);
+        }
 
     }
+
+
+
     public BitSet keyBits = new BitSet(256);
     @Override
     public void keyPressed(final KeyEvent e) {

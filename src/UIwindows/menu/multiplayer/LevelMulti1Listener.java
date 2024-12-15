@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -80,6 +81,14 @@ int rows = map.length;
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
     GL gl;
+    private JLabel scoreLabel;
+    public LevelMulti1Listener(JLabel scoreLabel) {
+        this.scoreLabel = scoreLabel;
+    }
+    public LevelMulti1Listener() {
+
+    }
+
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -123,20 +132,21 @@ int rows = map.length;
                 eat.remove(i);
                 score1++;
                 System.out.println("I am eating");
+                System.out.println("score: "+score1);
                 //handle sound
             }
-            if(pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()){
-                eat.remove(i);
-                score2++;
-                //handle sound
-            }
+
         }
     }
+
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
+        gl.glDisable(GL.GL_DEPTH_TEST);
+
+
         DrawBackground();
         DrawFood(gl);
         //draw two pacman
@@ -144,6 +154,9 @@ int rows = map.length;
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
         handleKey();
         handleEat();
+        scoreLabel.setText("PacMan: " + score1 );
+
+        gl.glPopMatrix();
 
 //        System.out.println(pacman2.getX()+" "+ pacman2.getY());
     }
