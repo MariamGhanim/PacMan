@@ -15,9 +15,8 @@ public class choosePlayers {
         canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.getContentPane().setBackground(new Color(190, 200, 220));
 
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(null);
+        // Main panel with GridBagLayout for vertical alignment
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setOpaque(false);
 
         // Create buttons
@@ -25,77 +24,59 @@ public class choosePlayers {
         JButton multiPlayerButton = new JButton("Multiplayer");
         JButton backButton = new JButton("Back");
 
-
         styleButton(singlePlayerButton);
         styleButton(multiPlayerButton);
         styleButton(backButton);
 
-        singlePlayerButton.setBounds(300, 200, 150, 50);  // (x, y, width, height)
-        multiPlayerButton.setBounds(300, 270, 150, 50);
-        backButton.setBounds(300, 340, 150, 50);
+        // GridBagConstraints for vertical placement
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 0, 10, 0); // Space between buttons
+        gbc.gridx = 0; // Center horizontally
+        gbc.fill = GridBagConstraints.NONE; // No resizing for buttons
 
-        buttonPanel.add(singlePlayerButton);
-        buttonPanel.add(multiPlayerButton);
-        buttonPanel.add(backButton);
+        // Add buttons to the panel
+        gbc.gridy = 0; // First button
+        buttonPanel.add(singlePlayerButton, gbc);
+        gbc.gridy = 1; // Second button
+        buttonPanel.add(multiPlayerButton, gbc);
+        gbc.gridy = 2; // Third button
+        buttonPanel.add(backButton, gbc);
 
-        singlePlayerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gameWindow.setVisible(false);  // Hide current window
-                JFrame usernameWindow = new JFrame("Username");
-                new username().showUsername(usernameWindow);
-                usernameWindow.setSize(800, 600);  // Set size for the new window
-                usernameWindow.setLocationRelativeTo(null);
-                usernameWindow.setResizable(true); // Allow resizing the new window
-                usernameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Close the window properly
-                usernameWindow.setVisible(true);  // Make sure the new window is visible
-            }
+        // Add action listeners
+        singlePlayerButton.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            username.showUsername(gameWindow);
         });
 
-        multiPlayerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gameWindow.setVisible(false);
-                JFrame twoUsernameWindow = new JFrame("Two Username");
-                new twoUsername().showTwoUsernames(twoUsernameWindow);
-                twoUsernameWindow.setSize(800, 600);
-                twoUsernameWindow.setResizable(true);
-                twoUsernameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                twoUsernameWindow.setVisible(true);
-            }
+        multiPlayerButton.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            twoUsername.showTwoUsernames(gameWindow);
         });
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gameWindow.setVisible(false);  // Hide current window
-                JFrame startWindow = new JFrame("Start or Exit");
-                new startOrExit().showMenu(startWindow);
-                startWindow.setSize(800, 600);  // Set size for the new window
-                startWindow.setResizable(true); // Allow resizing the new window
-                startWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Close the window properly
-                startWindow.setVisible(true);  // Make sure the new window is visible
-            }
+        backButton.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            startOrExit.showMenu(gameWindow);
         });
 
+        // Add panel to the window
+        gameWindow.getContentPane().setLayout(new BorderLayout());
         gameWindow.getContentPane().add(buttonPanel, BorderLayout.CENTER);
+
         gameWindow.revalidate();
         gameWindow.repaint();
 
-
         new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
-        gameWindow.setSize(800, 600); // ج initial size for the main window
-        gameWindow.setResizable(true); // Allow resizing the window
-        gameWindow.setVisible(true); // ج sure the game window is visible
-        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ج the app properly when main window is closed
+        gameWindow.setSize(800, 600);
+        gameWindow.setResizable(true);
+        gameWindow.setVisible(true);
+        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
 
     private static void styleButton(JButton button) {
         button.setBackground(Color.GRAY);
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(120, 50));
+        button.setPreferredSize(new Dimension(150, 50)); // Fixed size for consistent design
     }
 }

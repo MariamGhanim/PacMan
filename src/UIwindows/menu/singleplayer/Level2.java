@@ -9,7 +9,7 @@ import java.awt.*;
 public class Level2 {
     public static void showLevel2(JFrame gameWindow) {
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
+        //canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.getContentPane().add(canvas, BorderLayout.CENTER);
         gameWindow.revalidate();
         gameWindow.repaint();

@@ -7,6 +7,8 @@ import UIwindows.PlayGame;
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class ChooseMpLevels {
     public static void showMpLevels(JFrame gameWindow) {
@@ -16,7 +18,6 @@ public class ChooseMpLevels {
                 super.paintComponent(g);
                 ImageIcon backgroundIcon = new ImageIcon("Assets/screens/wall_2.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
-
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
@@ -30,48 +31,68 @@ public class ChooseMpLevels {
         gameWindow.getContentPane().add(canvas, BorderLayout.CENTER);
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
 
-        //  image buttons for level1 and level2
+
         JButton level1Button = new JButton();
         ImageIcon level1Icon = new ImageIcon("Assets/level1.png");
-        Image scaledLevel1Image = level1Icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH); // Resize the image
-        level1Button.setIcon(new ImageIcon(scaledLevel1Image));
-        level1Button.setBorderPainted(true);
+        level1Button.setIcon(createScaledIcon(level1Icon, gameWindow));
+        level1Button.setBorderPainted(false);
         level1Button.setContentAreaFilled(false);
         level1Button.setFocusPainted(true);
 
         JButton level2Button = new JButton();
         ImageIcon level2Icon = new ImageIcon("Assets/level2.png");
-        Image scaledLevel2Image = level2Icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH); // Resize the image
-        level2Button.setIcon(new ImageIcon(scaledLevel2Image));
-        level2Button.setBorderPainted(true);
+        level2Button.setIcon(createScaledIcon(level2Icon, gameWindow));
+        level2Button.setBorderPainted(false);
         level2Button.setContentAreaFilled(false);
         level2Button.setFocusPainted(true);
 
-        // button positions
-        level1Button.setBounds(200, 280, 120, 70);
-        level2Button.setBounds(450, 280, 120, 70);
+        menuPanel.add(level1Button);
+        menuPanel.add(level2Button);
 
-        // action listeners
+
+        positionButtons(gameWindow, level1Button, level2Button);
+
+        // action listeners for buttons
         level1Button.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
-            mpLevel1.showMpLevel1(gameWindow); // go to mpLevel1
+            mpLevel1.showMpLevel1(gameWindow);
         });
 
         level2Button.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
-            mpLevel2.showMpLevel2(gameWindow); // go to mpLevel2
+            mpLevel2.showMpLevel2(gameWindow);
         });
 
-        // Add buttons to the panel
-        menuPanel.add(level1Button);
-        menuPanel.add(level2Button);
+
+        gameWindow.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                positionButtons(gameWindow, level1Button, level2Button);
+            }
+        });
 
         gameWindow.setSize(800, 600);
         gameWindow.setResizable(true);
         gameWindow.revalidate();
         gameWindow.repaint();
-        gameWindow.setLocationRelativeTo(null);//علشان تظهر في نص الشاشه
+        gameWindow.setLocationRelativeTo(null);
 
         new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
+    }
+
+
+    private static ImageIcon createScaledIcon(ImageIcon icon, JFrame gameWindow) {
+        int newWidth = (int)(gameWindow.getWidth() * 0.24);
+        int newHeight = (int)(gameWindow.getHeight() * 0.15);
+        Image scaledImage = icon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
+
+    private static void positionButtons(JFrame gameWindow, JButton level1Button, JButton level2Button) {
+        level1Button.setBounds((int)(gameWindow.getWidth() * 0.25), (int)(gameWindow.getHeight() * 0.45),
+                (int)(gameWindow.getWidth() * 0.15), (int)(gameWindow.getHeight() * 0.12));
+        level2Button.setBounds((int)(gameWindow.getWidth() * 0.55), (int)(gameWindow.getHeight() * 0.45),
+                (int)(gameWindow.getWidth() * 0.15), (int)(gameWindow.getHeight() * 0.12));
     }
 }

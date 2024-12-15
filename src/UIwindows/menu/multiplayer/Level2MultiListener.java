@@ -5,26 +5,23 @@ import objects.Ghost;
 import objects.Pacman;
 import texture.AnimListener;
 import texture.TextureReader;
+
+import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Set;
-
-
 import static java.awt.event.KeyEvent.*;
-import static javax.media.opengl.GL.GL_CURRENT_BIT;
-import static javax.media.opengl.GL.GL_TEXTURE_2D;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 
 public class Level2MultiListener extends AnimListener implements KeyListener , GLEventListener {
 
@@ -48,7 +45,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
             "apple.png","blinky.png","pinky.png",
-             "heart.png","clyde.png","Ghosts.png", "Map.jpg"
+             "heart.png","clyde.png","Ghosts.png", "pause.png","Map.jpg",
 
     };
 
@@ -108,25 +105,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     public Level2MultiListener() {
 
     }
-    public void UpdateScoreAndLevel(GL gl) {
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glPushAttrib(GL.GL_CURRENT_BIT);
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        GLUT glut = new GLUT();
-        gl.glPushMatrix();
-        gl.glRasterPos2d(-0.2, 0.95);
-        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
-                "Score1: " + score1 + " |  Score2: " + score2);
 
-        gl.glRasterPos2d(-0.9, 0.95);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
-
-        gl.glPopMatrix();
-        gl.glPopAttrib();
-        gl.glEnable(GL.GL_TEXTURE_2D);
-    }
 
 
     public void init(GLAutoDrawable gld) {
@@ -150,21 +129,31 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         addApples();
     }
 
-    public void PacEat(){
+    public void PacEat() {
         for (int i = 0; i < eating.size(); i++) {
-            if(pacman1.ConvertX() == eating.get(i).getX() && pacman1.ConvertY() == eating.get(i).getY()){
+            boolean pelletEaten = false;
+
+            if (pacman1.ConvertX() == eating.get(i).getX() && pacman1.ConvertY() == eating.get(i).getY()) {
                 eating.remove(i);
                 score1++;
-                //handle sound
+                pelletEaten = true;
+                playSound("src/Assets/sounds/pacman_eatfruit.wav");
             }
-            if(pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()){
+
+            if (!pelletEaten && pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()) {
                 eating.remove(i);
                 score2++;
-                //handle sound
+                pelletEaten = true;
+                playSound("src/Assets/sounds/pacman_eatfruit.wav");
             }
-            System.out.println("Pac1 Score: "+score1+" Pac2 Score:  "+score2);
+
+            if (pelletEaten) {
+                i--;
+                System.out.println("Pac1 Score: " + score1 + " Pac2 Score: " + score2);
+            }
         }
     }
+
     public void theWinner(){
         if(eating.isEmpty()){
             if(score1 > score2){
@@ -185,7 +174,6 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
 
-        // رسم الخلفية والطعام
         DrawBackground();
         DrawFood(gl);
         UpdateScoreAndLevel(gl);
@@ -197,18 +185,17 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         DrawSprite(ghost3.getX(), ghost3.getY(), ghost3.getIndex(), 0.5f);
         DrawSprite(ghost4.getX(), ghost4.getY(), ghost4.getIndex(), 0.5f);
 
+
         handleKey();
         PacEat();
-
+        if (isPaused) {
+            DrawSprite(maxWidth / 2, maxHeight / 2, 11, 2.0f);
+            return;
+        }
 
         gl.glPopMatrix();
         System.out.println(pacman1.getX() + " " + pacman2.getX());
     }
-
-
-
-
-
 
     public void addApples() {
         for (int i = 0; i < rows; i++) {
@@ -225,6 +212,25 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         }
 
 
+    }
+    public void UpdateScoreAndLevel(GL gl) {
+        gl.glMatrixMode(GL.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glPushAttrib(GL.GL_CURRENT_BIT);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        GLUT glut = new GLUT();
+        gl.glPushMatrix();
+        gl.glRasterPos2d(-0.2, 0.95);
+        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
+                "Score1: " + score1 + " |  Score2: " + score2);
+
+        gl.glRasterPos2d(-0.9, 0.95);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+
+        gl.glPopMatrix();
+        gl.glPopAttrib();
+        gl.glEnable(GL.GL_TEXTURE_2D);
     }
 
     public void DrawFood(GL gl){
@@ -315,12 +321,16 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
 
 
+    private boolean isPaused = false;
 
     public BitSet keyBits = new BitSet(256);
     @Override
     public void keyPressed(final KeyEvent e) {
         int keyCode = e.getKeyCode();
         keyBits.set(keyCode);
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            isPaused = !isPaused;  // (true -> false or false -> true)
+        }
     }
 
     @Override
@@ -345,6 +355,24 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
     public boolean isKeyPressed(final int keyCode) {
         return keyBits.get(keyCode);
+    }
+
+    private void playSound(String soundFile) {
+        try {
+
+            File file = new File(soundFile);
+            if (!file.exists()) {
+                System.err.println("Sound file not found: " + soundFile);
+                return;
+            }
+
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            clip.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
