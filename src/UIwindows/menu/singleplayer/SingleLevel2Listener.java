@@ -45,7 +45,7 @@ public class SingleLevel2Listener extends BaseJogl {
             this.texture = texture;
             this.index = index;
         }
-
+//
         PacObject(int texture, int index, int random) {
             this.texture = texture;
             this.index = index;
