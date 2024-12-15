@@ -27,25 +27,20 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
 
     int maxWidth = 600;
     int maxHeight = 600;
-    int index1 = 0,index2=0,index3=6,index4=7,index5=9 ,index6=10;
-    int x = 30,y = 560,x2=560,y2=30,x3=300,y3=300,x4=300,y4=300,x5=340,y5=300,x6=330,y6=300;
-    int lives = 3;
+    int index1 = 0,index2=0;
+    int x = 30,y = 560,x2=560,y2=30;
     ArrayList<Eating> eating = new ArrayList<Eating>();
+    ArrayList<Ghost> ghost = new ArrayList<>();
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
-    Ghost ghost1 = new Ghost(x3, y3, index3);
-    Ghost ghost2 = new Ghost(x4, y4, index4);
-    Ghost ghost3 = new Ghost(x5, y5, index5);
-
-    Ghost ghost4 = new Ghost(x6, y6, index6);
     int score1 = 0,score2 = 0,level=2;
 
 
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
-            "apple.png","blinky.png","pinky.png",
-             "heart.png","clyde.png","Ghosts.png", "pause.png","Map.jpg",
+            "apple.png","blinky.png","pinky.png"
+             ,"clyde.png", "inky.png","blue_ghost.png","pause.png","Map.jpg",
 
     };
 
@@ -127,6 +122,13 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
         addApples();
+        ghost.add(new Ghost(300, 400, 6));
+        ghost.add(new Ghost(575, 575, 7));
+        ghost.add(new Ghost(70, 70, 8));
+        ghost.add(new Ghost(500, 100, 9));
+        for (Ghost g : ghost) {
+            g.moveRandom();
+        }
     }
 
     public void PacEat() {
@@ -144,7 +146,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 eating.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("src/Assets/sounds/pacman_eatfruit.wav");
+                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -153,7 +155,42 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
-
+    private void handelGhostMove() {
+        for (Ghost g : ghost) {
+            switch (g.getDirection()) {
+                case -1 -> {
+                }
+                case 0 -> {
+                    if (map[g.ConvertY() - 1][g.ConvertX()] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveUP();
+                }
+                case 1 -> {
+                    if (map[g.ConvertY() + 1][g.ConvertX()] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveDown();
+                }
+                case 2 -> {
+                    if (map[g.ConvertY()][g.ConvertX() + 1] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveRight();
+                }
+                case 3 -> {
+                    if (map[g.ConvertY()][g.ConvertX() - 1] == 0) {
+                        g.moveRandom();
+                        return;
+                    }
+                    g.moveLeft();
+                }
+            }
+        }
+    }
     public void theWinner(){
         if(eating.isEmpty()){
             if(score1 > score2){
@@ -165,7 +202,17 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
-
+    public void handleTheLose(){
+        for(int i = 0; i < ghost.size();i++){
+            if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
+                System.out.println("PacMan 2 win");
+                //stop the game
+            }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
+                System.out.println("PacMan 1 win");
+                //stop the game
+            }
+        }
+    }
 
     @Override
     public void display(GLAutoDrawable gld) {
@@ -179,22 +226,18 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         UpdateScoreAndLevel(gl);
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
-
-        DrawSprite(ghost1.getX(), ghost1.getY(), ghost1.getIndex(), 0.5f);
-        DrawSprite(ghost2.getX(), ghost2.getY(), ghost2.getIndex(), 0.5f);
-        DrawSprite(ghost3.getX(), ghost3.getY(), ghost3.getIndex(), 0.5f);
-        DrawSprite(ghost4.getX(), ghost4.getY(), ghost4.getIndex(), 0.5f);
-
-
+        drawGhost();
+        handelGhostMove();
         handleKey();
         PacEat();
         if (isPaused) {
             DrawSprite(maxWidth / 2, maxHeight / 2, 11, 2.0f);
             return;
         }
-
-        gl.glPopMatrix();
-        System.out.println(pacman1.getX() + " " + pacman2.getX());
+        handleTheLose();
+        theWinner();
+//        gl.glPopMatrix();
+//        System.out.println(pacman1.getX() + " " + pacman2.getX());
     }
 
     public void addApples() {
@@ -202,16 +245,11 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             for (int j = 0; j < column; j++) {
                 if (i % 2 == 0 && j % 2 == 0) {
                     if (map[i][j] == 1) {
-
                         eating.add(new Eating(j, i, 5));
-
-
                     }
                 }
             }
         }
-
-
     }
     public void UpdateScoreAndLevel(GL gl) {
         gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -232,7 +270,11 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glPopAttrib();
         gl.glEnable(GL.GL_TEXTURE_2D);
     }
-
+    private void drawGhost() {
+        for (Ghost g : ghost) {
+            DrawSprite(g.getX(),g.getY(), g.getIndex(), g.getScale());
+        }
+    }
     public void DrawFood(GL gl){
         for(Eating e : eating)
             DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.4f);
@@ -287,9 +329,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         if (isKeyPressed(VK_RIGHT)) {
             if (pacman1.getIndex() == 0) pacman1.setIndex(2);
             else pacman1.setIndex(0);
-            if (x < maxWidth - 45) {
-                if (map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
-            }
+            if (map[pacman1.ConvertY()][pacman1.ConvertX() + 1] == 1) pacman1.setX(x += 7);
         }
         if (isKeyPressed(VK_LEFT)) {
             if (pacman1.getIndex() == 0) pacman1.setIndex(4);

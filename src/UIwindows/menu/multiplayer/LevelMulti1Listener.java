@@ -140,7 +140,6 @@ int rows = map.length;
         ghost.add(new Ghost(300, 400, 7));
         ghost.add(new Ghost(575, 575, 8));
         ghost.add(new Ghost(70, 70, 9));
-        ghost.add(new Ghost(500, 100, 10));
         for (Ghost g : ghost) {
             g.moveRandom();
         }
@@ -269,7 +268,6 @@ int rows = map.length;
             DrawSprite(g.getX(),g.getY(), g.getIndex(), g.getScale());
         }
     }
-
     public void DrawSprite(int x, int y, int index, float scale) {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[index]);
