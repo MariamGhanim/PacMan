@@ -46,19 +46,12 @@ public class username {
 
 
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-                                         @Override
-                                         public void actionPerformed(ActionEvent e) {
-                                             gameWindow.setVisible(false);  // Hide current window
-                                             JFrame startWindow = new JFrame("Start or Exit");
-                                             new choosePlayers().showchoosePlayers(startWindow);
-                                             startWindow.setSize(800, 600);
-                                             startWindow.setResizable(true); // Allow resizing the new window
-                                             startWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Close the window properly
-                                             startWindow.setVisible(true);  // Make sure the new window is visible
-                                         }
-                                     }
-        );
+        backButton.setBackground(Color.GRAY);
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            choosePlayers.showchoosePlayers(gameWindow);
+        });
 
 
         submitButton.addActionListener(new ActionListener() {

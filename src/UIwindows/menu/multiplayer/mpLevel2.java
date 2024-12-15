@@ -14,16 +14,9 @@ public class mpLevel2 extends JFrame {
         FPSAnimator animator;
 
 
-        JLabel scoreLabel = new JLabel("PacMan 1: 0  PacMan 2: 0");
-        scoreLabel.setFont(new Font("Helvetica", Font.PLAIN, 24));
-        scoreLabel.setForeground(Color.WHITE);
-        scoreLabel.setBackground(Color.BLACK);
-        scoreLabel.setOpaque(true);
-        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        scoreLabel.setVerticalAlignment(SwingConstants.CENTER);
 
 
-        AnimListener listener = new Level2MultiListener(scoreLabel);
+        AnimListener listener = new Level2MultiListener();
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
@@ -33,7 +26,6 @@ public class mpLevel2 extends JFrame {
         animator.start();
 
         gameWindow.getContentPane().removeAll();
-        gameWindow.getContentPane().add(scoreLabel, BorderLayout.NORTH);
         gameWindow.getContentPane().add(glcanvas, BorderLayout.CENTER);
 
 
