@@ -230,13 +230,14 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
         drawGhost();
-        handelGhostMove();
-        handleKey();
-        PacEat();
         if (isPaused) {
             DrawSprite(maxWidth / 2, maxHeight / 2, 11, 2.0f);
             return;
         }
+        handelGhostMove();
+        handleKey();
+        PacEat();
+
         handleTheLose();
         theWinner();
 

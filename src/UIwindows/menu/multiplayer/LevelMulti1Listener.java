@@ -260,13 +260,14 @@ int rows = map.length;
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
         drawGhost();
+        if (isPaused) {
+            DrawSprite(maxWidth / 2, maxHeight / 2, 13, 2.0f);
+            return; // الخروج لمنع تنفيذ باقي الأكواد
+        }
         handelGhostMove();
         handleKey();
         handleEat();
-        if (isPaused) {
-            DrawSprite(maxWidth / 2, maxHeight / 2, 7, 2.0f);
-            return;
-        }
+
         handleTheLose();
         theWinner();
     }

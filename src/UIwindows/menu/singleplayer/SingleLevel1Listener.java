@@ -358,6 +358,7 @@ public class  SingleLevel1Listener extends BaseJogl {
             DrawTexture(gl, 18, new double[]{0, -0.6}, new double[]{0.3, 0.3});
         }
 
+
         if (KeyList.size() != 0) {
             handleKeyPress();
         }

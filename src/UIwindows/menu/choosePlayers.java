@@ -56,6 +56,7 @@ public class choosePlayers {
             gameWindow.getContentPane().removeAll();
             startOrExit.showMenu(gameWindow);
             SoundManager.stopSound();
+
         });
 
 

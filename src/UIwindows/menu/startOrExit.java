@@ -61,7 +61,9 @@ public class startOrExit {
         startButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             choosePlayers.showchoosePlayers(gameWindow);
+
         });
+
 
         helpButton.addActionListener(e -> JOptionPane.showMessageDialog(gameWindow,
                 "Instructions:\n" +
@@ -119,12 +121,16 @@ public class startOrExit {
 
 
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
+        gameWindow.pack();
+
         gameWindow.revalidate();
         gameWindow.repaint();
+
 
         gameWindow.setSize(800, 600);
         gameWindow.setResizable(true);
         gameWindow.setVisible(true);
         gameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
     }
 }
