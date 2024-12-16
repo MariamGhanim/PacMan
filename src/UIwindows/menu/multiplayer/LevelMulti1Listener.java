@@ -1,6 +1,7 @@
 package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.GLUT;
+import logic.SoundManager;
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
@@ -99,7 +100,7 @@ int rows = map.length;
     }
 
     public void UpdateScoreAndLevel(GL gl) {
-        // إعدادات المصفوفة
+
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_TEXTURE_2D);
@@ -112,7 +113,7 @@ int rows = map.length;
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
                 "Score1: " + score1+" | "+"Score2: "+score2);
         gl.glRasterPos2d(-0.9, 0.95); // النص الخاص بـ Level
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
         gl.glPopMatrix();
         gl.glPopAttrib();
         gl.glEnable(GL.GL_TEXTURE_2D);
@@ -207,14 +208,14 @@ int rows = map.length;
                 eat.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()) {
                 eat.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -249,6 +250,8 @@ int rows = map.length;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+
         DrawBackground();
         UpdateScoreAndLevel(gl);
         DrawFood(gl);

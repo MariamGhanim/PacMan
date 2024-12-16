@@ -14,7 +14,6 @@ public class username {
         gameWindow.getContentPane().setBackground(Color.YELLOW);
 
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
 
 

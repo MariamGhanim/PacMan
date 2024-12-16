@@ -1,5 +1,6 @@
 package UIwindows.menu.multiplayer;
 import com.sun.opengl.util.GLUT;
+import logic.SoundManager;
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
@@ -139,14 +140,14 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 eating.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("PAcMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()) {
                 eating.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -220,7 +221,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
         DrawBackground();
         DrawFood(gl);
         UpdateScoreAndLevel(gl);
@@ -264,7 +265,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 "Score1: " + score1 + " |  Score2: " + score2);
 
         gl.glRasterPos2d(-0.9, 0.95);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
 
         gl.glPopMatrix();
         gl.glPopAttrib();

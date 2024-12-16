@@ -1,5 +1,6 @@
 package UIwindows.menu.singleplayer;
 import com.sun.opengl.util.GLUT;
+import logic.SoundManager;
 import texture.TextureReader;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -306,6 +307,7 @@ public class  SingleLevel1Listener extends BaseJogl {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         Angle += 2;
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
 
         if (StartGame) {
             if (killRange()) {
@@ -403,7 +405,7 @@ public class  SingleLevel1Listener extends BaseJogl {
         gl.glLoadIdentity();
         gl.glDisable(GL_TEXTURE_2D);
         gl.glPushAttrib(GL_CURRENT_BIT);
-        gl.glColor4f(1, 0, 0, 0.5f);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glPushMatrix();
         GLUT glut = new GLUT();
         gl.glRasterPos2d(-0.1, 0.958);

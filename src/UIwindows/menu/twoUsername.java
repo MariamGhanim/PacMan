@@ -14,7 +14,6 @@ public class twoUsername {
     public static void showTwoUsernames(JFrame gameWindow) {
         gameWindow.getContentPane().setBackground(Color.YELLOW);
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());

@@ -12,7 +12,6 @@ public class choosePlayers {
 
     public static void showchoosePlayers(JFrame gameWindow) {
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.getContentPane().setBackground(new Color(190, 200, 220));
 
         // Main panel with GridBagLayout for vertical alignment

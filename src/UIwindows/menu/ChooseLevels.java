@@ -24,7 +24,6 @@ public class ChooseLevels {
         menuPanel.setLayout(null);
 
         GLCanvas canvas = new GLCanvas();
-        //canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
         gameWindow.getContentPane().add(canvas, BorderLayout.CENTER);
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
