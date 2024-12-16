@@ -14,10 +14,9 @@ public class Ghost {
     int targetX, targetY;
     long modeStartTime = 0;
     int level;
-
-    int secretedTime = 7; // في المستوى الأول
-    int chaseTime = 20; // في المستوى الأول
-    int frighteningTime = 6; // في المستوى الأول
+    int scattredTime = 5;
+    int chaseTime = 30;
+    int frighteningTime = 4;
 
     public float getScale() {
         return scale;
@@ -33,7 +32,7 @@ public class Ghost {
         this.index = index;
         this.level=level;
         if (level==2){
-            this.secretedTime = 5;
+            this.scattredTime = 5;
             this.frighteningTime = 4;
             this.chaseTime = 30;
         }
@@ -97,26 +96,27 @@ public class Ghost {
             moveChase();
         } else if (isScatter) {
             moveScatter();
+            moveRandom();
         }
 
         //لانتقال بين الأوضاع
         long elapsedTime = System.currentTimeMillis() - modeStartTime;
 
         if (isChase && elapsedTime > chaseTime * 1000) {
-            switchMode(false, true, false);  // تغيير الوضع إلى scatter بعد انتهاء زمن المطاردة
+            switchMode(false, true, false);  // تغيير الوضع إلى scatter
         }
         else if (isFrightened && elapsedTime > frighteningTime * 1000) {
-            switchMode(false, true, false);  // العودة إلى scatter
+            switchMode(false, true, false);  // scatter
         }
 
 
     }
     public void moveChase() {
-        if (index == 0) {
+        if (index == 6) {
             // Blinky يطارد مباشرة
             targetX = 15; targetY = 0;
         }
-        else if (index == 1) {
+        else if (index == 7) {
             // Pinky يطارد الموقع الذي أمام باك مان
             targetX = 5; targetY = 0;
         }
