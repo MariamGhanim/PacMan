@@ -211,6 +211,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
                 System.out.println("PacMan 1 win");
                 //stop the game
+
             }
         }
     }

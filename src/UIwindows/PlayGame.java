@@ -19,7 +19,6 @@ public class PlayGame {
         startOrExit.showMenu(gameWindow);
         gameWindow.setVisible(true);
     }
-
     public static class GameRenderer implements GLEventListener {
         @Override
         public void init(GLAutoDrawable drawable) {
