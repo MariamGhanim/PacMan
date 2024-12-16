@@ -123,10 +123,10 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
         addApples();
-        ghost.add(new Ghost(300, 400, 6));
-        ghost.add(new Ghost(575, 575, 7));
-        ghost.add(new Ghost(70, 70, 8));
-        ghost.add(new Ghost(500, 100, 9));
+        ghost.add(new Ghost(300, 400, 6,2));
+        ghost.add(new Ghost(575, 575, 7,2));
+        ghost.add(new Ghost(70, 70, 8,2));
+        ghost.add(new Ghost(500, 100, 9,2));
         for (Ghost g : ghost) {
             g.moveRandom();
         }
@@ -158,6 +158,13 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
     private void handelGhostMove() {
         for (Ghost g : ghost) {
+            if (g.isFrightened()){
+                g.moveFrightened();
+        } else if (g.isChase()) {
+            g.moveChase();  // حالة المطاردة
+        } else if (g.isScatter()) {
+            g.moveScatter();  // حالة التشتت
+        }
             switch (g.getDirection()) {
                 case -1 -> {
                 }
