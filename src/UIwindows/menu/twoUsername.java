@@ -1,5 +1,7 @@
 package UIwindows.menu;
 import UIwindows.PlayGame;
+import logic.SoundManager;
+
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -59,7 +61,7 @@ public class twoUsername {
                     JOptionPane.showMessageDialog(gameWindow, "Player 1: " + userName1 + "\nPlayer 2: " + userName2);
                     inputPanel.setVisible(false);
                     gameWindow.getContentPane().remove(backButtonPanel);
-                    ChooseMpLevels.showMpLevels(gameWindow); // Call the levels class to show the next screen
+                    ChooseMpLevels.showMpLevels(gameWindow);
                 } else {
                     JOptionPane.showMessageDialog(gameWindow, "Please enter valid names for both players.");
                 }
@@ -83,20 +85,21 @@ public class twoUsername {
         gbc.gridy = 4;
         inputPanel.add(submitButton, gbc);
 
-        //  a new panel for the back button with BorderLayout
+
         backButtonPanel = new JPanel();
         backButtonPanel.setLayout(new BorderLayout());
         backButtonPanel.setBackground(Color.YELLOW);
 
-        //  the back button
+
         JButton backButton = new JButton("Back");
         backButton.setBackground(Color.GRAY);
         backButton.setForeground(Color.WHITE);
 
-        //  action listener to the back button
         backButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             choosePlayers.showchoosePlayers(gameWindow);
+
+
         });
 
         backButtonPanel.add(backButton, BorderLayout.WEST);

@@ -20,5 +20,4 @@ public class PlayGame {
         gameWindow.setVisible(true);
     }
 
-
 }

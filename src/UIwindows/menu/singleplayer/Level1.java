@@ -4,6 +4,7 @@ import UIwindows.PlayGame;
 import UIwindows.menu.multiplayer.LevelMulti1Listener;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
+import logic.SoundManager;
 import texture.AnimListener;
 
 import javax.media.opengl.GLCanvas;
@@ -14,6 +15,7 @@ public class Level1 extends JFrame{
 
     public static void showLevel1(JFrame gameWindow) {
         GLCanvas glcanvas = new GLCanvas();
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
 
         Animator animator = new FPSAnimator(100);
         SingleLevel1Listener listener = new SingleLevel1Listener();

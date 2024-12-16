@@ -20,23 +20,15 @@ public class startOrExit {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
-                // تشغيل الصوت لأول مرة
-                if (!SoundManager.isSoundPlaying()) {
-                    SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
-                }
-
-
                 ImageIcon backgroundIcon = new ImageIcon("Assets/titleScreen.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
 
-
         menuPanel.setPreferredSize(new Dimension(800, 600));
-        menuPanel.setLayout(null); // نظام تخطيط يدوي
-
+        menuPanel.setLayout(null);
+        SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
 
         JButton soundToggleButton = new JButton(new ImageIcon("src/Assets/soundOn.png"));
         soundToggleButton.setBorderPainted(false);
@@ -48,33 +40,6 @@ public class startOrExit {
         Image img = soundOnIcon.getImage();
         Image newImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         soundToggleButton.setIcon(new ImageIcon(newImg));
-
-        soundToggleButton.setBounds(560, 70, 200, 50);
-        soundToggleButton.addActionListener(e -> {
-            if (SoundManager.isSoundPlaying()) {
-                SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
-
-                ImageIcon soundOffIcon = new ImageIcon("src/Assets/soundOff.png");
-                Image imgOff = soundOffIcon.getImage();
-                Image newImgOff = imgOff.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                soundToggleButton.setIcon(new ImageIcon(newImgOff));
-
-            } else {
-
-                if (!SoundManager.isSoundPlaying()) {
-                    SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
-                }
-                ImageIcon soundOnIconUpdated = new ImageIcon("src/Assets/soundOn.png");
-                Image imgOn = soundOnIconUpdated.getImage();
-                Image newImgOn = imgOn.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-                soundToggleButton.setIcon(new ImageIcon(newImgOn));
-
-            }
-        });
-
-
-        soundToggleButton.setOpaque(false);
-        soundToggleButton.setBorder(null);
 
         menuPanel.add(soundToggleButton);
 
@@ -89,15 +54,9 @@ public class startOrExit {
             button.setBackground(Color.YELLOW);
             button.setFocusPainted(false);
             button.setPreferredSize(new Dimension(200, 50));
+            menuPanel.add(button);
         }
 
-        startButton.setBounds(300, 300, 200, 50);
-        helpButton.setBounds(300, 380, 200, 50);
-        exitButton.setBounds(300, 450, 200, 50);
-
-        menuPanel.add(startButton);
-        menuPanel.add(helpButton);
-        menuPanel.add(exitButton);
 
         startButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
@@ -117,7 +76,46 @@ public class startOrExit {
 
         exitButton.addActionListener(e -> System.exit(0));
 
-        new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
+        soundToggleButton.addActionListener(e -> {
+            if (isSoundOn) {
+                SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+                ImageIcon soundOffIcon = new ImageIcon("src/Assets/soundOff.png");
+                Image imgOff = soundOffIcon.getImage();
+                Image newImgOff = imgOff.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                soundToggleButton.setIcon(new ImageIcon(newImgOff));
+                isSoundOn = false;
+            } else {
+                if (!SoundManager.isSoundPlaying()) {
+                    SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
+                }
+                ImageIcon soundOnIconUpdated = new ImageIcon("src/Assets/soundOn.png");
+                Image imgOn = soundOnIconUpdated.getImage();
+                Image newImgOn = imgOn.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                soundToggleButton.setIcon(new ImageIcon(newImgOn));
+                isSoundOn = true;
+            }
+        });
+
+
+        gameWindow.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                int windowWidth = gameWindow.getWidth();
+                int windowHeight = gameWindow.getHeight();
+                int centerX = windowWidth / 2 - 100;
+
+                int startY = (int) (windowHeight * 0.6);
+                int gap = (int) (windowHeight * 0.1);
+
+
+                startButton.setBounds(centerX, startY, 200, 50);
+                helpButton.setBounds(centerX, startY + gap, 200, 50);
+                exitButton.setBounds(centerX, startY + 2 * gap, 200, 50);
+                int soundX = (int) (windowWidth * 0.15);
+                int soundY = (int) (windowHeight * 0.20);
+                soundToggleButton.setBounds(soundX, soundY, 50, 50);
+            }
+        });
+
 
 
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
@@ -129,5 +127,4 @@ public class startOrExit {
         gameWindow.setVisible(true);
         gameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-
 }

@@ -390,22 +390,6 @@ int rows = map.length;
         return keyBits.get(keyCode);
     }
 
-    private void playSound(String soundFile) {
-        try {
 
-            File file = new File(soundFile);
-            if (!file.exists()) {
-                System.err.println("Sound file not found: " + soundFile);
-                return;
-            }
-
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
