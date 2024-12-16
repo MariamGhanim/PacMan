@@ -1,6 +1,7 @@
 package UIwindows.menu;
 
 import UIwindows.PlayGame;
+import logic.SoundManager;
 
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
@@ -16,7 +17,6 @@ public class username {
     public static void showUsername(JFrame gameWindow) {
         gameWindow.getContentPane().setBackground(Color.YELLOW);
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
@@ -35,7 +35,7 @@ public class username {
         nameField.setForeground(Color.BLACK);
         nameField.setBorder(new LineBorder(Color.BLACK, 2, true));
 
-        // Button to submit the username
+
         JButton submitButton = new JButton("Next");
         submitButton.setFont(new Font("Arial", Font.PLAIN, 20));
         submitButton.setBackground(Color.GRAY);
@@ -49,6 +49,8 @@ public class username {
         backButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             choosePlayers.showchoosePlayers(gameWindow);
+
+
         });
 
         submitButton.addActionListener(new ActionListener() {
@@ -59,7 +61,7 @@ public class username {
                     JOptionPane.showMessageDialog(gameWindow, "Name saved: " + userName);
                     inputPanel.setVisible(false);
                     gameWindow.getContentPane().remove(backButtonPanel);
-                    ChooseLevels.showLevels(gameWindow); // Call the levels class to show the next screen
+                    ChooseLevels.showLevels(gameWindow);
                 } else {
                     JOptionPane.showMessageDialog(gameWindow, "Please enter a valid name.");
                 }
@@ -82,7 +84,7 @@ public class username {
         backButtonPanel.add(backButton, BorderLayout.WEST);
         gameWindow.getContentPane().add(backButtonPanel, BorderLayout.SOUTH);
         gameWindow.getContentPane().add(inputPanel, BorderLayout.CENTER);
-        gameWindow.getContentPane().add(canvas, BorderLayout.NORTH); // Move canvas to the top
+        gameWindow.getContentPane().add(canvas, BorderLayout.NORTH);
 
 
         gameWindow.revalidate();

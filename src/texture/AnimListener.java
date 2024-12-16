@@ -3,6 +3,7 @@ package texture;/*
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 import javax.media.opengl.GLEventListener;
 import java.awt.event.KeyListener;
 
@@ -11,6 +12,6 @@ import java.awt.event.KeyListener;
  */
 public abstract class AnimListener implements GLEventListener, KeyListener {
  
-    public String assetsFolderName = "C:\\Users\\IT\\PaccMan\\src\\Assets\\imgs";
+    public String assetsFolderName = "Assets\\imgs";
     
 }

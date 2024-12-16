@@ -1,6 +1,7 @@
 package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.GLUT;
+import logic.SoundManager;
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
@@ -99,7 +100,7 @@ int rows = map.length;
     }
 
     public void UpdateScoreAndLevel(GL gl) {
-        // إعدادات المصفوفة
+
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_TEXTURE_2D);
@@ -112,7 +113,7 @@ int rows = map.length;
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
                 "Score1: " + score1+" | "+"Score2: "+score2);
         gl.glRasterPos2d(-0.9, 0.95); // النص الخاص بـ Level
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
         gl.glPopMatrix();
         gl.glPopAttrib();
         gl.glEnable(GL.GL_TEXTURE_2D);
@@ -208,14 +209,14 @@ int rows = map.length;
                 eat.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()) {
                 eat.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -250,6 +251,8 @@ int rows = map.length;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+
         DrawBackground();
         UpdateScoreAndLevel(gl);
         DrawFood(gl);
@@ -257,13 +260,14 @@ int rows = map.length;
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.6f);
         drawGhost();
+        if (isPaused) {
+            DrawSprite(maxWidth / 2, maxHeight / 2, 13, 2.0f);
+            return; // الخروج لمنع تنفيذ باقي الأكواد
+        }
         handelGhostMove();
         handleKey();
         handleEat();
-        if (isPaused) {
-            DrawSprite(maxWidth / 2, maxHeight / 2, 7, 2.0f);
-            return;
-        }
+
         handleTheLose();
         theWinner();
     }
@@ -387,22 +391,6 @@ int rows = map.length;
         return keyBits.get(keyCode);
     }
 
-    private void playSound(String soundFile) {
-        try {
 
-            File file = new File(soundFile);
-            if (!file.exists()) {
-                System.err.println("Sound file not found: " + soundFile);
-                return;
-            }
-
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

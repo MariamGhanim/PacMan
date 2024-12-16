@@ -1,14 +1,6 @@
 package UIwindows;
-
 import UIwindows.menu.startOrExit;
-
-import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
-
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-import java.awt.*;
 
 public class PlayGame {
     public static void main(String[] args) {
@@ -19,6 +11,7 @@ public class PlayGame {
         startOrExit.showMenu(gameWindow);
         gameWindow.setVisible(true);
     }
+<<<<<<< HEAD
     public static class GameRenderer implements GLEventListener {
         @Override
         public void init(GLAutoDrawable drawable) {
@@ -42,4 +35,7 @@ public class PlayGame {
         @Override
         public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {}
     }
+=======
+
+>>>>>>> 0986137516d54a89c018ca7564d896ddfe1f9b4a
 }

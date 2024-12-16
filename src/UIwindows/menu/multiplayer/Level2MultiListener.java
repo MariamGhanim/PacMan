@@ -1,5 +1,7 @@
 package UIwindows.menu.multiplayer;
 import com.sun.opengl.util.GLUT;
+import logic.SoundManager;
+
 import objects.Eating;
 import objects.Ghost;
 import objects.Pacman;
@@ -138,14 +140,14 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 eating.remove(i);
                 score1++;
                 pelletEaten = true;
-                playSound("PAcMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()) {
                 eating.remove(i);
                 score2++;
                 pelletEaten = true;
-                playSound("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -222,19 +224,21 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
         DrawBackground();
         DrawFood(gl);
         UpdateScoreAndLevel(gl);
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.5f);
         DrawSprite(pacman2.getX(), pacman2.getY(), pacman2.getIndex(), 0.5f);
         drawGhost();
-        handelGhostMove();
-        handleKey();
-        PacEat();
         if (isPaused) {
             DrawSprite(maxWidth / 2, maxHeight / 2, 11, 2.0f);
             return;
         }
+        handelGhostMove();
+        handleKey();
+        PacEat();
+
         handleTheLose();
         theWinner();
 
@@ -264,7 +268,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 "Score1: " + score1 + " |  Score2: " + score2);
 
         gl.glRasterPos2d(-0.9, 0.95);
-        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "Level: " + level);
+        glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
 
         gl.glPopMatrix();
         gl.glPopAttrib();
@@ -397,22 +401,6 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         return keyBits.get(keyCode);
     }
 
-    private void playSound(String soundFile) {
-        try {
 
-            File file = new File(soundFile);
-            if (!file.exists()) {
-                System.err.println("Sound file not found: " + soundFile);
-                return;
-            }
-
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-}

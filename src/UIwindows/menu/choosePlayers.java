@@ -1,6 +1,7 @@
 package UIwindows.menu;
 
 import UIwindows.PlayGame;
+import logic.SoundManager;
 
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
@@ -12,14 +13,13 @@ public class choosePlayers {
 
     public static void showchoosePlayers(JFrame gameWindow) {
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.getContentPane().setBackground(new Color(190, 200, 220));
 
-        // Main panel with GridBagLayout for vertical alignment
+
+
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setOpaque(false);
 
-        // Create buttons
         JButton singlePlayerButton = new JButton("Single Player");
         JButton multiPlayerButton = new JButton("Multiplayer");
         JButton backButton = new JButton("Back");
@@ -28,21 +28,20 @@ public class choosePlayers {
         styleButton(multiPlayerButton);
         styleButton(backButton);
 
-        // GridBagConstraints for vertical placement
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0); // Space between buttons
-        gbc.gridx = 0; // Center horizontally
-        gbc.fill = GridBagConstraints.NONE; // No resizing for buttons
+        gbc.insets = new Insets(10, 0, 10, 0);
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.NONE;
 
-        // Add buttons to the panel
-        gbc.gridy = 0; // First button
+
+        gbc.gridy = 0;
         buttonPanel.add(singlePlayerButton, gbc);
-        gbc.gridy = 1; // Second button
+        gbc.gridy = 1;
         buttonPanel.add(multiPlayerButton, gbc);
-        gbc.gridy = 2; // Third button
+        gbc.gridy = 2;
         buttonPanel.add(backButton, gbc);
 
-        // Add action listeners
+
         singlePlayerButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             username.showUsername(gameWindow);
@@ -56,9 +55,11 @@ public class choosePlayers {
         backButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             startOrExit.showMenu(gameWindow);
+            SoundManager.stopSound();
+
         });
 
-        // Add panel to the window
+
         gameWindow.getContentPane().setLayout(new BorderLayout());
         gameWindow.getContentPane().add(buttonPanel, BorderLayout.CENTER);
 
@@ -77,6 +78,6 @@ public class choosePlayers {
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(150, 50)); // Fixed size for consistent design
+        button.setPreferredSize(new Dimension(150, 50));
     }
 }
