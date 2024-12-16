@@ -1,5 +1,7 @@
 package UIwindows.menu;
 import UIwindows.PlayGame;
+import UIwindows.menu.multiplayer.mpLevel1;
+import UIwindows.menu.multiplayer.mpLevel2;
 import UIwindows.menu.singleplayer.Level1;
 import UIwindows.menu.singleplayer.Level2;
 import javax.media.opengl.GLCanvas;
@@ -22,12 +24,12 @@ public class ChooseLevels {
         menuPanel.setLayout(null);
 
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
+        //canvas.addGLEventListener(new PlayGame.GameRenderer());
         gameWindow.setLayout(new BorderLayout());
         gameWindow.getContentPane().add(canvas, BorderLayout.CENTER);
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
 
-        //  image buttons for level1 and level2
+
         JButton level1Button = new JButton();
         ImageIcon level1Icon = new ImageIcon("Assets/level1.png");
         Image scaledLevel1Image = level1Icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH); // Resize the image
@@ -44,36 +46,25 @@ public class ChooseLevels {
         level2Button.setContentAreaFilled(false);
         level2Button.setFocusPainted(true);
 
-        //  bounds for buttons
+
         level1Button.setBounds(200, 280, 120, 70);
         level2Button.setBounds(450, 280, 120, 70);
         menuPanel.add(level1Button);
         menuPanel.add(level2Button);
 
-        //  action listeners to buttons
-        level1Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Remove current components
-                gameWindow.getContentPane().removeAll();
-                // Open Level1
-                Level1.showLevel1(gameWindow);
-            }
+
+        level1Button.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            Level1.showLevel1(gameWindow); // go to mpLevel1
         });
 
-        level2Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Remove current components
-                gameWindow.getContentPane().removeAll();
-                // Open Level2
-                Level2.showLevel2(gameWindow);
-            }
+        level2Button.addActionListener(e -> {
+            gameWindow.getContentPane().removeAll();
+            Level2.showLevel2(gameWindow); // go to mpLevel2
         });
 
-        // Set game window properties
         gameWindow.setSize(800, 600);
-        gameWindow.setResizable(true); // Allow resizing
+        gameWindow.setResizable(true);
         gameWindow.revalidate();
         gameWindow.repaint();
         new com.sun.opengl.util.FPSAnimator(canvas, 60).start();

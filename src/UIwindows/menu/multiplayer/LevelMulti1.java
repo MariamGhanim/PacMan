@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class LevelMulti1 extends JFrame {
+
+
     public static void main(String[] args) {
         new LevelMulti1();
     }
