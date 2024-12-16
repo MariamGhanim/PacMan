@@ -41,7 +41,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
             //5
             "strawberry.png","dot.png",
             //7
-            "blinky.png","ghost.gif","pinky.png","clyde.png",
+            "blinky.png","ghost.gif","pinky.png","clyde.png","inky.png","blue_ghost.png",
             "pause.png","Map3.jpg"
     };
     int[][] map = new int[][]{
@@ -138,9 +138,10 @@ int rows = map.length;
             }
         }
         addFood();
-        ghost.add(new Ghost(300, 400, 7));
-        ghost.add(new Ghost(575, 575, 8));
-        ghost.add(new Ghost(70, 70, 9));
+        ghost.add(new Ghost(300, 400, 7,1));
+        ghost.add(new Ghost(575, 575, 8,1));
+        ghost.add(new Ghost(70, 70, 9,1));
+        ghost.add(new Ghost(500, 100, 9,1));
         for (Ghost g : ghost) {
             g.moveRandom();
         }
