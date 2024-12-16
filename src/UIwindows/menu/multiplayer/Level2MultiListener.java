@@ -35,7 +35,6 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     Pacman pacman2 = new Pacman(x2,y2,index2);
     int score1 = 0,score2 = 0,level=2;
 
-
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
@@ -157,17 +156,11 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
     private void handelGhostMove() {
         for (Ghost g : ghost) {
-            if (g.isFrightened()){
-                g.moveFrightened();
-        } else if (g.isChase()) {
-            g.moveChase();  // حالة المطاردة
-        } else if (g.isScatter()) {
-            g.moveScatter();  // حالة التشتت
-        }
+            g.move();
             switch (g.getDirection()) {
                 case -1 -> {
                 }
-                case 0 -> {
+               case 0 -> {
                     if (map[g.ConvertY() - 1][g.ConvertX()] == 0) {
                         g.moveRandom();
                         return;
@@ -197,6 +190,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 }
             }
         }
+
     }
     public void theWinner(){
         if(eating.isEmpty()){
@@ -227,7 +221,6 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-
         DrawBackground();
         DrawFood(gl);
         UpdateScoreAndLevel(gl);
@@ -243,8 +236,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         }
         handleTheLose();
         theWinner();
-//        gl.glPopMatrix();
-//        System.out.println(pacman1.getX() + " " + pacman2.getX());
+
     }
 
     public void addApples() {
