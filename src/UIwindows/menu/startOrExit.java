@@ -2,39 +2,46 @@ package UIwindows.menu;
 
 import UIwindows.PlayGame;
 import UIwindows.menu.choosePlayers;
+import logic.SoundManager;
 
 import javax.media.opengl.GLCanvas;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 public class startOrExit {
-    private static boolean isSoundPlayed = false;
+    private static boolean isSoundOn = true; // للتحكم بحالة الصوت
 
     public static void showMenu(JFrame gameWindow) {
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new PlayGame.GameRenderer());
 
+        // لوحة الخلفية
         JPanel menuPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (!isSoundPlayed) {
-                    playSound("src/Assets/sounds/pacman_beginning.wav");
-                    isSoundPlayed = true;
-                }
-
                 ImageIcon backgroundIcon = new ImageIcon("Assets/titleScreen.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         };
 
-        menuPanel.setLayout(new GridBagLayout());
+        menuPanel.setPreferredSize(new Dimension(800, 600));
+        menuPanel.setLayout(null);
+        SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
+
+        JButton soundToggleButton = new JButton(new ImageIcon("src/Assets/soundOn.png"));
+        soundToggleButton.setBorderPainted(false);
+        soundToggleButton.setContentAreaFilled(false);
+        soundToggleButton.setFocusPainted(false);
+        soundToggleButton.setPreferredSize(new Dimension(50, 50));
+
+        ImageIcon soundOnIcon = new ImageIcon("src/Assets/soundOn.png");
+        Image img = soundOnIcon.getImage();
+        Image newImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        soundToggleButton.setIcon(new ImageIcon(newImg));
+
+        menuPanel.add(soundToggleButton);
 
         JButton startButton = new JButton("Start Game");
         JButton helpButton = new JButton("Help");
@@ -47,33 +54,16 @@ public class startOrExit {
             button.setBackground(Color.YELLOW);
             button.setFocusPainted(false);
             button.setPreferredSize(new Dimension(200, 50));
+            menuPanel.add(button);
         }
 
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 280)), gbc);
-
-        gbc.insets = new Insets(10, 280, 10, 280);
-        gbc.weightx = 1.0;
-        gbc.weighty = 0.0;
-
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        gbc.gridy = 1;
-        menuPanel.add(startButton, gbc);
-
-        gbc.gridy = 2;
-        menuPanel.add(helpButton, gbc);
-
-        gbc.gridy = 3;
-        menuPanel.add(exitButton, gbc);
 
         startButton.addActionListener(e -> {
             gameWindow.getContentPane().removeAll();
             choosePlayers.showchoosePlayers(gameWindow);
+
         });
+
 
         helpButton.addActionListener(e -> JOptionPane.showMessageDialog(gameWindow,
                 "Instructions:\n" +
@@ -81,39 +71,66 @@ public class startOrExit {
                         "2. Use WASD keys to move Player 2 (PacMan 2).\n" +
                         "3. Avoid ghosts.\n" +
                         "4. Eat all the items to win.\n" +
-                        "5. If a player gets caught by a ghost, they lose a life.\n" +
-                        "6. The game ends when one player wins or both players lose all lives.\n",
+                        "5. Space to pause.\n" +
+                        "6. If a player gets caught by a ghost, they lose a life.\n" +
+                        "7. The game ends when one player wins or both players lose all lives.\n",
                 "Game Instructions", JOptionPane.INFORMATION_MESSAGE));
 
         exitButton.addActionListener(e -> System.exit(0));
 
-        gameWindow.getContentPane().removeAll();
+        soundToggleButton.addActionListener(e -> {
+            if (isSoundOn) {
+                SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+                ImageIcon soundOffIcon = new ImageIcon("src/Assets/soundOff.png");
+                Image imgOff = soundOffIcon.getImage();
+                Image newImgOff = imgOff.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                soundToggleButton.setIcon(new ImageIcon(newImgOff));
+                isSoundOn = false;
+            } else {
+                if (!SoundManager.isSoundPlaying()) {
+                    SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
+                }
+                ImageIcon soundOnIconUpdated = new ImageIcon("src/Assets/soundOn.png");
+                Image imgOn = soundOnIconUpdated.getImage();
+                Image newImgOn = imgOn.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+                soundToggleButton.setIcon(new ImageIcon(newImgOn));
+                isSoundOn = true;
+            }
+        });
+
+
+        gameWindow.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                int windowWidth = gameWindow.getWidth();
+                int windowHeight = gameWindow.getHeight();
+                int centerX = windowWidth / 2 - 100;
+
+                int startY = (int) (windowHeight * 0.6);
+                int gap = (int) (windowHeight * 0.1);
+
+
+                startButton.setBounds(centerX, startY, 200, 50);
+                helpButton.setBounds(centerX, startY + gap, 200, 50);
+                exitButton.setBounds(centerX, startY + 2 * gap, 200, 50);
+                int soundX = (int) (windowWidth * 0.15);
+                int soundY = (int) (windowHeight * 0.20);
+                soundToggleButton.setBounds(soundX, soundY, 50, 50);
+            }
+        });
+
+
+
         gameWindow.getContentPane().add(menuPanel, BorderLayout.CENTER);
+        gameWindow.pack();
 
         gameWindow.revalidate();
         gameWindow.repaint();
-        new com.sun.opengl.util.FPSAnimator(canvas, 60).start();
+
 
         gameWindow.setSize(800, 600);
         gameWindow.setResizable(true);
         gameWindow.setVisible(true);
         gameWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
 
-    public static void playSound(String soundFile) {
-        try {
-            File file = new File(soundFile);
-            if (!file.exists()) {
-                System.err.println("Sound file not found: " + soundFile);
-                return;
-            }
-
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

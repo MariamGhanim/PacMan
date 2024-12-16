@@ -1,6 +1,7 @@
 package UIwindows.menu.multiplayer;
 
 import com.sun.opengl.util.FPSAnimator;
+import objects.Ghost;
 import texture.AnimListener;
 
 import javax.media.opengl.GLCanvas;
@@ -8,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Level2Multi extends JFrame {
-
 
     public static void main(String[] args) {
         new Level2Multi();
@@ -24,7 +24,6 @@ public class Level2Multi extends JFrame {
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);
         getContentPane().add(glcanvas, BorderLayout.CENTER);
-
         animator = new FPSAnimator(15);
         animator.add(glcanvas);
         animator.start();
