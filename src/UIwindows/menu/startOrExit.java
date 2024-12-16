@@ -24,11 +24,11 @@ public class startOrExit {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (!isSoundPlayed) {
-                    playSound("src/Assets/sounds/pacman_beginning.wav");
+                    playSound("PacMan/src/Assets/sounds/pacman_beginning.wav");
                     isSoundPlayed = true;
                 }
 
-                ImageIcon backgroundIcon = new ImageIcon("Assets/titleScreen.jpg");
+                ImageIcon backgroundIcon = new ImageIcon("PacMan/Assets/titleScreen.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }

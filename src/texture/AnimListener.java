@@ -5,12 +5,8 @@ package texture;/*
  */
 import javax.media.opengl.GLEventListener;
 import java.awt.event.KeyListener;
-
-/**
- * @author Moody
- */
 public abstract class AnimListener implements GLEventListener, KeyListener {
  
-    public String assetsFolderName = "C:\\Users\\IT\\PacMan\\src\\Assets\\imgs";
+    public String assetsFolderName = "PacMan\\src\\Assets\\imgs";
     
 }
