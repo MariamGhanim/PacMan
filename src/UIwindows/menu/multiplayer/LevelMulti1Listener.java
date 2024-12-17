@@ -88,7 +88,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
-int rows = map.length;
+    int rows = map.length;
     int column = map[0].length;
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
@@ -238,12 +238,34 @@ int rows = map.length;
         for(int i = 0; i < ghost.size();i++){
             if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
                 System.out.println("PacMan 2 win");
-                //stop the game
+                JOptionPane.showMessageDialog(null, "Pacman 2 is the WINNER!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                resetGame();
+                return;
             }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
                 System.out.println("PacMan 1 win");
                 //stop the game
+                JOptionPane.showMessageDialog(null, "Pacman 1 is the WINNER!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                resetGame();
+                return;
             }
         }
+    }
+    private void resetGame() {
+
+        score1 = 0;
+        score2 = 0;
+
+
+        x = 40; y = 540;
+        x2 = 555; y2 = 60;
+        pacman1 = new Pacman(x, y, index1);
+        pacman2 = new Pacman(x2, y2, index2);
+
+
+        level = 1;
+
+
+
     }
     @Override
     public void display(GLAutoDrawable gld) {

@@ -6,6 +6,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -419,11 +420,15 @@ public class  SingleLevel1Listener extends BaseJogl {
     }
 
     private boolean killRange() {
-        return (
-                (Math.abs(SingleLevel1Listener.y - Enemies[0].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[0].x) <= 5) ||
-                        (Math.abs(SingleLevel1Listener.y - Enemies[1].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[1].x) <= 5) ||
-                        (Math.abs(SingleLevel1Listener.y - Enemies[2].y) <= 5 && Math.abs(SingleLevel1Listener.x - Enemies[2].x) <= 5)
-        );
+        for (SingleLevel1Listener.PacObject enemy : Enemies) {
+            if (Math.abs(SingleLevel1Listener.x - enemy.x) < 1.0 &&
+                    Math.abs(SingleLevel1Listener.y - enemy.y) < 1.0) {
+
+                JOptionPane.showMessageDialog(null, "You Lose!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void keyPressed(final KeyEvent event) {

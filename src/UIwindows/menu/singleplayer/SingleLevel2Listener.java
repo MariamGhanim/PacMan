@@ -8,6 +8,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -34,7 +35,7 @@ public class SingleLevel2Listener extends BaseJogl {
             "extra/dot.png", "extra/apple.png", "Ready.png",
             "GameOver.png", "Win.png", "menu.jpg",
             "level2.png", "ghosts/blinky.png", "ghosts/pinky.png",
-            "ghosts/clyde.png", "blue_ghost.png"  , "Background.jpeg"
+            "ghosts/clyde.png"  , "Background.jpeg"
     };
 
 
@@ -46,7 +47,7 @@ public class SingleLevel2Listener extends BaseJogl {
             this.texture = texture;
             this.index = index;
         }
-//
+        //
         PacObject(int texture, int index, int random) {
             this.texture = texture;
             this.index = index;
@@ -423,11 +424,15 @@ public class SingleLevel2Listener extends BaseJogl {
     }
 
     private boolean killRange() {
-        return (
-                (Math.abs(SingleLevel2Listener.y - Enemies[0].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[0].x) <= 5) ||
-                        (Math.abs(SingleLevel2Listener.y - Enemies[1].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[1].x) <= 5) ||
-                        (Math.abs(SingleLevel2Listener.y - Enemies[2].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[2].x) <= 5)
-        );
+        for (PacObject enemy : Enemies) {
+            if (Math.abs(SingleLevel2Listener.x - enemy.x) < 1.0 &&
+                    Math.abs(SingleLevel2Listener.y - enemy.y) < 1.0) {
+
+                JOptionPane.showMessageDialog(null, "You Lose!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void keyPressed(final KeyEvent event) {

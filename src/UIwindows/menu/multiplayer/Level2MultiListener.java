@@ -23,6 +23,7 @@ import static java.awt.event.KeyEvent.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.io.File;
 
 public class Level2MultiListener extends AnimListener implements KeyListener , GLEventListener {
@@ -41,7 +42,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
             "apple.png","blinky.png","pinky.png"
-             ,"clyde.png", "inky.png","blue_ghost.png","pause.png","Map.jpg",
+            ,"clyde.png", "inky.png","blue_ghost.png","pause.png","Map.jpg",
 
     };
 
@@ -162,7 +163,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             switch (g.getDirection()) {
                 case -1 -> {
                 }
-               case 0 -> {
+                case 0 -> {
                     if (map[g.ConvertY() - 1][g.ConvertX()] == 0) {
                         g.moveRandom();
                         return;
@@ -209,13 +210,34 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         for(int i = 0; i < ghost.size();i++){
             if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
                 System.out.println("PacMan 2 win");
-                //stop the game
+                JOptionPane.showMessageDialog(null, "Pacman 2 is the WINNER!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                resetGame();
+                return;
             }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
                 System.out.println("PacMan 1 win");
                 //stop the game
-
+                JOptionPane.showMessageDialog(null, "Pacman 1 is the WINNER!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                resetGame();
+                return;
             }
         }
+    }
+    private void resetGame() {
+
+        score1 = 0;
+        score2 = 0;
+
+
+        x = 40; y = 540;
+        x2 = 555; y2 = 60;
+        pacman1 = new Pacman(x, y, index1);
+        pacman2 = new Pacman(x2, y2, index2);
+
+
+        level = 1;
+
+
+
     }
 
     @Override
@@ -402,5 +424,5 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     }
 
 
-    }
+}
 
