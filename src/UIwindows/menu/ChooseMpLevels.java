@@ -18,7 +18,7 @@ public class ChooseMpLevels {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundIcon = new ImageIcon("Assets/screens/wall_2.jpg");
+                ImageIcon backgroundIcon = new ImageIcon("PacMan/Assets/screens/wall_2.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
@@ -32,7 +32,7 @@ public class ChooseMpLevels {
 
 
         JButton level1Button = new JButton();
-        ImageIcon level1Icon = new ImageIcon("Assets/level1.png");
+        ImageIcon level1Icon = new ImageIcon("PacMan/Assets/level1.png");
         Image scaledLevel1Image = level1Icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH);
         level1Button.setIcon(new ImageIcon(scaledLevel1Image));
         level1Button.setBorderPainted(true);
@@ -40,7 +40,7 @@ public class ChooseMpLevels {
         level1Button.setFocusPainted(true);
 
         JButton level2Button = new JButton();
-        ImageIcon level2Icon = new ImageIcon("Assets/level2.png");
+        ImageIcon level2Icon = new ImageIcon("PacMan/Assets/level2.png");
         Image scaledLevel2Image = level2Icon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH);
         level2Button.setIcon(new ImageIcon(scaledLevel2Image));
         level2Button.setBorderPainted(true);

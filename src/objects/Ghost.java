@@ -85,10 +85,6 @@ public class Ghost {
         this.y = 10;
         this.isEaten = false;
     }
-    public void eatenByPacMan() {
-        this.isEaten = true;
-        resetToStartPosition();
-    }
     public void move() {
         if (isFrightened) {
             moveFrightened();
@@ -128,23 +124,18 @@ public class Ghost {
             targetX = 0; targetY = 10;
         }
     }
-
-
     public void moveUP() {
         ghostdir = 0;
         y -= 5;
     }
-
     public void moveDown() {
         ghostdir = 1;
         y += 5;
     }
-
     public void moveRight() {
         ghostdir = 2;
         x += 5;
     }
-
     public void moveLeft() {
         ghostdir = 3;
         x -= 5;
@@ -169,6 +160,10 @@ public class Ghost {
 
     public int getIndex() {
         return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public int getDirection() {

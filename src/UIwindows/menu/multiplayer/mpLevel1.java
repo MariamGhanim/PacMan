@@ -12,7 +12,7 @@ public class mpLevel1 extends JFrame {
 
     public static void showMpLevel1(JFrame gameWindow) {
         FPSAnimator animator;
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
         LevelMulti1Listener gameListener = new LevelMulti1Listener(gameWindow);
 

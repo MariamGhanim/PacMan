@@ -20,7 +20,7 @@ public class startOrExit {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundIcon = new ImageIcon("Assets/titleScreen.jpg");
+                ImageIcon backgroundIcon = new ImageIcon("PacMan/Assets/titleScreen.jpg");
                 Image backgroundImage = backgroundIcon.getImage();
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
@@ -28,15 +28,15 @@ public class startOrExit {
 
         menuPanel.setPreferredSize(new Dimension(800, 600));
         menuPanel.setLayout(null);
-        SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.playSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
-        JButton soundToggleButton = new JButton(new ImageIcon("src/Assets/soundOn.png"));
+        JButton soundToggleButton = new JButton(new ImageIcon("PacMan/src/Assets/soundOn.png"));
         soundToggleButton.setBorderPainted(false);
         soundToggleButton.setContentAreaFilled(false);
         soundToggleButton.setFocusPainted(false);
         soundToggleButton.setPreferredSize(new Dimension(50, 50));
 
-        ImageIcon soundOnIcon = new ImageIcon("src/Assets/soundOn.png");
+        ImageIcon soundOnIcon = new ImageIcon("PacMan/src/Assets/soundOn.png");
         Image img = soundOnIcon.getImage();
         Image newImg = img.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         soundToggleButton.setIcon(new ImageIcon(newImg));
@@ -80,15 +80,15 @@ public class startOrExit {
 
         soundToggleButton.addActionListener(e -> {
             if (isSoundOn) {
-                SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
-                ImageIcon soundOffIcon = new ImageIcon("src/Assets/soundOff.png");
+                SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
+                ImageIcon soundOffIcon = new ImageIcon("PAcMan/src/Assets/soundOff.png");
                 Image imgOff = soundOffIcon.getImage();
                 Image newImgOff = imgOff.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 soundToggleButton.setIcon(new ImageIcon(newImgOff));
                 isSoundOn = false;
             } else {
                 if (!SoundManager.isSoundPlaying()) {
-                    SoundManager.playSound("src/Assets/sounds/pacmanSong.wav");
+                    SoundManager.playSound("PacMan/src/Assets/sounds/pacmanSong.wav");
                 }
                 ImageIcon soundOnIconUpdated = new ImageIcon("src/Assets/soundOn.png");
                 Image imgOn = soundOnIconUpdated.getImage();

@@ -15,7 +15,7 @@ public class Level2 extends JFrame{
     public static void showLevel2(JFrame gameWindow) {
 
         GLCanvas glcanvas = new GLCanvas();
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
         Animator animator = new FPSAnimator(100);
         SingleLevel2Listener listener = new SingleLevel2Listener();

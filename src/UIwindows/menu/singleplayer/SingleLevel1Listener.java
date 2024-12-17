@@ -42,12 +42,13 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
     int score = 0,level=1;
+    int lives = 3;
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
             "strawberry.png","dot.png",
             //7
-            "blinky.png","ghost.gif","pinky.png","clyde.png","inky.png","blue_ghost.png",
+            "blinky.png","ghost.gif","pinky.png","clyde.png","heart.png","blue_ghost.png",
             "pause.png","Map3.jpg"
     };
     int[][] map = new int[][]{
@@ -213,6 +214,11 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         for(Eating e : eat)
             DrawSprite(e.ConvertX(),e.ConvertY(),e.getIndex(),0.6f);
     }
+    public void drawLives(){
+        for (int i = 0; i < lives; i++) {
+            DrawSprite(100+ i *30, 590,11,0.4f);
+        }
+    }
     public void handleEat(){
         for (int i = 0; i < eat.size(); i++) {
             boolean pelletEaten = false;
@@ -221,7 +227,17 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
                 eat.remove(i);
                 score++;
                 pelletEaten = true;
-                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
+                if(pacman1.ConvertY() == pacman1.ConvertX()){
+                    System.out.println("STRAWBERRY");
+                    for(Ghost g : ghost){
+                        if(g.getIndex() != 12) g.setIndex(12);
+                        else{
+                            g.setIndex(9);
+                        }
+                    }
+                }
+
+                SoundManager.playSoundOnce("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
 
@@ -232,18 +248,15 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
             }
         }
     }
-
-
     public void handleTheLose() {
-
         for (int i = 0; i < ghost.size(); i++) {
             if (pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()) {
-                isPaused = true;
-                announceLoser(userName + " lost with a score of " + score + "!");
-
-                return;
+               if(lives == 0){
+                   isPaused = true;
+                   announceLoser(userName + " lost with a score of " + score + "!");
+               }
+               lives--;
             }
-
         }
         //  if all pellets are eaten (based on scores)
         if (eat.isEmpty()) {
@@ -325,11 +338,12 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
         DrawBackground();
         UpdateScoreAndLevel(gl);
         DrawFood(gl);
+        drawLives();
         //draw two pacman
         DrawSprite(pacman1.getX(), pacman1.getY(), pacman1.getIndex(), 0.6f);
         drawGhost();

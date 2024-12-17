@@ -286,7 +286,7 @@ public class SingleLevel2Listener extends BaseJogl {
     public void reInit() {
         ResetPoints();
 
-        PlaySound("Assets\\sounds\\pacman_beginning.wav", 0);
+        PlaySound("PacMan\\Assets\\sounds\\pacman_beginning.wav", 0);
 
         StartGame = true;
         GameOver = false;
@@ -315,7 +315,7 @@ public class SingleLevel2Listener extends BaseJogl {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         Angle += 2;
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
 
         if (StartGame) {

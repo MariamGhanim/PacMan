@@ -16,7 +16,7 @@ public class Level1 extends JFrame{
     public static void showLevel1(JFrame gameWindow) {
 
             FPSAnimator animator;
-            SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+            SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
             SingleLevel1Listener gameListener = new SingleLevel1Listener(gameWindow);
 

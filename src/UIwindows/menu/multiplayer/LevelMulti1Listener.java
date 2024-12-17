@@ -41,6 +41,7 @@ public class LevelMulti1Listener extends AnimListener implements KeyListener , G
     Pacman pacman1 = new Pacman(x,y,index1);
     Pacman pacman2 = new Pacman(x2,y2,index2);
     int score1 = 0,score2=0,level=1;
+    int i = 8;
     static String[] textureNames = {
             "pacman.png","up.gif","right.gif", "down.gif","left.gif",
             //5
@@ -102,10 +103,6 @@ int rows = map.length;
     public LevelMulti1Listener(JFrame gameWindow) {
         this.gameWindow = gameWindow;
     }
-    public LevelMulti1Listener() {
-
-    }
-
     public void UpdateScoreAndLevel(GL gl) {
 
         gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -149,7 +146,7 @@ int rows = map.length;
         ghost.add(new Ghost(300, 400, 7,1));
         ghost.add(new Ghost(575, 575, 8,1));
         ghost.add(new Ghost(70, 70, 9,1));
-        ghost.add(new Ghost(500, 100, 9,1));
+        ghost.add(new Ghost(500, 100, 10,1));
         for (Ghost g : ghost) {
             g.moveRandom();
         }
@@ -214,14 +211,22 @@ int rows = map.length;
                 eat.remove(i);
                 score1++;
                 pelletEaten = true;
-                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
+                if(pacman1.ConvertY() == pacman1.ConvertX()) {
+                    System.out.println("STRAWBERRY !");
+                    for(Ghost g : ghost){
+                        if(g.getIndex() != 12) g.setIndex(12);
+                        else{
+                            g.setIndex(i=9);
+                        }
+                    }
+                }
             }
-
             if (!pelletEaten && pacman2.ConvertX() == eat.get(i).getX() && pacman2.ConvertY() == eat.get(i).getY()) {
                 eat.remove(i);
                 score2++;
                 pelletEaten = true;
-                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -328,7 +333,7 @@ int rows = map.length;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
 
         DrawBackground();
         UpdateScoreAndLevel(gl);
@@ -339,7 +344,7 @@ int rows = map.length;
         drawGhost();
         if (isPaused) {
             DrawSprite(maxWidth / 2, maxHeight / 2, 13, 2.0f);
-            return; // الخروج لمنع تنفيذ باقي الأكواد
+            return;
         }
         handelGhostMove();
         handleKey();

@@ -143,14 +143,14 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
                 eating.remove(i);
                 score1++;
                 pelletEaten = true;
-                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (!pelletEaten && pacman2.ConvertX() == eating.get(i).getX() && pacman2.ConvertY() == eating.get(i).getY()) {
                 eating.remove(i);
                 score2++;
                 pelletEaten = true;
-                SoundManager.playSoundOnce("src/Assets/sounds/pacman_eatfruit.wav");
+                SoundManager.playSoundOnce("PacMan/src/Assets/sounds/pacman_eatfruit.wav");
             }
 
             if (pelletEaten) {
@@ -269,7 +269,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glDisable(GL.GL_DEPTH_TEST);
-        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
+        SoundManager.stopSound("PacMan/src/Assets/sounds/pacmanSong.wav");
         DrawBackground();
         DrawFood(gl);
         UpdateScoreAndLevel(gl);
