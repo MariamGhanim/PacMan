@@ -201,7 +201,7 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < column; j++) {
                 if(i % 2 == 0 && j % 3 ==0) {
-                    if(map[i][j] == 1 && i == j) add.add(new Eating(j,i,5));
+                    if(map[i][j] == 1 && i == j) eat.add(new Eating(j,i,5));
                     else if (map[i][j] == 1) {
                         eat.add(new Eating(j, i,6));
                     }
