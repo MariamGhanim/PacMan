@@ -1,6 +1,9 @@
 package UIwindows.menu.multiplayer;
+import UIwindows.menu.startOrExit;
 import com.sun.opengl.util.GLUT;
 import logic.SoundManager;
+
+import javax.swing.*;
 
 import objects.Eating;
 import objects.Ghost;
@@ -8,24 +11,20 @@ import objects.Pacman;
 import texture.AnimListener;
 import texture.TextureReader;
 
-import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import static java.awt.event.KeyEvent.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import java.io.File;
+
 
 public class Level2MultiListener extends AnimListener implements KeyListener , GLEventListener {
+    private JFrame gameWindow;
 
     int maxWidth = 600;
     int maxHeight = 600;
@@ -98,11 +97,12 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
     static int[] textures = new int[textureNames.length];
     GL gl;
 
-    public Level2MultiListener() {
+    public Level2MultiListener(JFrame gameWindow) {
+        this.gameWindow = gameWindow;
+    }
+    public Level2MultiListener( ) {
 
     }
-
-
 
     public void init(GLAutoDrawable gld) {
         gl = gld.getGL();
@@ -205,17 +205,58 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
-    public void handleTheLose(){
-        for(int i = 0; i < ghost.size();i++){
-            if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
-                System.out.println("PacMan 2 win");
-                //stop the game
-            }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
-                System.out.println("PacMan 1 win");
-                //stop the game
+    public void handleTheLose() {
+        //  for collision with ghosts (PacMan loses)
+        for (int i = 0; i < ghost.size(); i++) {
+            if (pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()) {
+                isPaused = true;
+                announceWinner("PacMan 2 wins with a higher score!");
+                return;
+            }
+
+            if (pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()) {
+                isPaused = true;
+                announceWinner("PacMan 1 wins with a higher score!");
+                return;
+            }
+        }
+
+        //  if all pellets are eaten (based on scores)
+        if (eating.isEmpty()) {
+            isPaused = true;
+            if (score1 > score2) {
+                announceWinner("PacMan 1 wins with a score of " + score1 + "!");
+            } else if (score2 > score1) {
+                announceWinner("PacMan 2 wins with a score of " + score2 + "!");
+            } else {
+                announceWinner("It's a tie! Both players scored " + score1 + "!");
             }
         }
     }
+
+    private void announceWinner(String message) {
+        SwingUtilities.invokeLater(() -> {
+            int choice = JOptionPane.showOptionDialog(null,
+                    message + "\nDo you want to go home or exit?",
+                    "Game Over",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    new Object[]{"Home", "Exit"},
+                    "Home");
+
+            if (choice == 0) {
+                gameWindow.getContentPane().removeAll();
+
+                startOrExit.showMenu(gameWindow); //  back to the main menu
+                gameWindow.revalidate();
+                gameWindow.repaint();
+            } else if (choice == 1) {
+                System.exit(0); // Exit the game
+            }
+        });
+    }
+
 
     @Override
     public void display(GLAutoDrawable gld) {
@@ -238,9 +279,8 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         handleKey();
         PacEat();
 
-        handleTheLose();
         theWinner();
-
+        handleTheLose();
     }
 
     public void addApples() {
@@ -254,6 +294,9 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
             }
         }
     }
+
+
+
     public void UpdateScoreAndLevel(GL gl) {
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();

@@ -10,13 +10,13 @@ import java.awt.*;
 public class mpLevel1 extends JFrame {
 
     public static void showMpLevel1(JFrame gameWindow) {
-        GLCanvas glcanvas;
         FPSAnimator animator;
 
-        AnimListener listener = new LevelMulti1Listener();
-        glcanvas = new GLCanvas();
-        glcanvas.addGLEventListener(listener);
-        glcanvas.addKeyListener(listener);
+        LevelMulti1Listener gameListener = new LevelMulti1Listener(gameWindow);
+
+        GLCanvas glcanvas = new GLCanvas();
+        glcanvas.addGLEventListener(gameListener);
+        glcanvas.addKeyListener(gameListener);
 
         animator = new FPSAnimator(15);
         animator.add(glcanvas);
