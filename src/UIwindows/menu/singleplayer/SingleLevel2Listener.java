@@ -342,14 +342,14 @@ public class SingleLevel2Listener extends BaseJogl {
 
             for (Points P : PointsList) {
                 if (SingleLevel2Listener.x == P.getX() && SingleLevel2Listener.y == P.getY() && !P.isChecked()) {
-                    PlaySound("Assets\\sounds\\pacman_chomp.wav", -1);
+                    PlaySound("PacMan\\Assets\\sounds\\pacman_chomp.wav", -1);
                     Score += 10;
                     P.setChecked(true);
                 }
             }
             for (Points F : FruitsList) {
                 if (SingleLevel2Listener.x == F.getX() && SingleLevel2Listener.y == F.getY() && !F.isChecked()) {
-                    PlaySound("Assets\\sounds\\pacman_eatfruit.wav", -1);
+                    PlaySound("PacMan\\Assets\\sounds\\pacman_eatfruit.wav", -1);
                     Score += 20;
                     F.setChecked(true);
                 }
@@ -382,7 +382,7 @@ public class SingleLevel2Listener extends BaseJogl {
             } else {
                 newHighScore = false;
             }
-            PlaySound("Assets\\sounds\\pacman_death.wav", 1);
+            PlaySound("PacMan\\Assets\\sounds\\pacman_death.wav", 1);
             GameOver = false;
         }
 
@@ -390,7 +390,7 @@ public class SingleLevel2Listener extends BaseJogl {
         if (Score == finalScore) {
             highScore = finalScore;
             newHighScore = true;
-            PlaySound("Assets\\sounds\\Victory.wav", 2);
+            PlaySound("PacMan\\Assets\\sounds\\Victory.wav", 2);
             Score = 0;
         }
     }
