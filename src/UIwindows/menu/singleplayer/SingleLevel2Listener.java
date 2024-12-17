@@ -245,7 +245,8 @@ public class SingleLevel2Listener extends BaseJogl {
     private final double SPEED = 0.25;
     private boolean StartGame = true , GameOver = false; // انا عدلت هنا
     int keyCode, Level = 2, Angle = 0, FaceAnimations = 0, Face = 0, n = 0;
-    public int Score = 0, highScore = 0, FinalScore = 780;
+    public int Score = 0, highScore = 0, finalScore = 780;
+    public boolean newHighScore = false;
 
     private void ResetPoints() {
         PointsList.clear();
@@ -375,13 +376,20 @@ public class SingleLevel2Listener extends BaseJogl {
         }
 
         if (GameOver) {
+            if (Score > highScore) {
+                highScore = Score;
+                newHighScore = true;
+            } else {
+                newHighScore = false;
+            }
             PlaySound("Assets\\sounds\\pacman_death.wav", 1);
             GameOver = false;
         }
 
 
-
-        if (Score == FinalScore) {
+        if (Score == finalScore) {
+            highScore = finalScore;
+            newHighScore = true;
             PlaySound("Assets\\sounds\\Victory.wav", 2);
             Score = 0;
         }
@@ -417,7 +425,13 @@ public class SingleLevel2Listener extends BaseJogl {
         gl.glPushMatrix();
         GLUT glut = new GLUT();
         gl.glRasterPos2d(-0.1, 0.958);
-        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, userName + " Score : " + Score);
+
+        if (newHighScore) {
+            glut.glutBitmapString(
+                    GLUT.BITMAP_TIMES_ROMAN_24, userName + " achieved a new high score: " + highScore + "!"
+            );
+        }
+
         gl.glRasterPos2d(-0.9, 0.958);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV : " + Level);
         gl.glPopMatrix();
@@ -430,7 +444,22 @@ public class SingleLevel2Listener extends BaseJogl {
             if (Math.abs(SingleLevel2Listener.x - enemy.x) < 1.0 &&
                     Math.abs(SingleLevel2Listener.y - enemy.y) < 1.0) {
 
-                JOptionPane.showMessageDialog(null, "You Lose!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                if (Score > highScore) {
+                    highScore = Score;
+                    newHighScore = true;
+                }
+
+                if (newHighScore) {
+                    JOptionPane.showMessageDialog(
+                            null, "You Lose! With a new high score of: " + highScore,
+                            "Game Over", JOptionPane.ERROR_MESSAGE
+                    );
+                } else {
+                    JOptionPane.showMessageDialog(
+                            null, "You Lose! With a score: " + Score + " vs Past high score: " +
+                                    highScore, "Game Over", JOptionPane.ERROR_MESSAGE
+                    );
+                }
                 return true;
             }
         }
