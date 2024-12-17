@@ -2,6 +2,7 @@ package UIwindows.menu.multiplayer;
 
 import UIwindows.PlayGame;
 import com.sun.opengl.util.FPSAnimator;
+import logic.SoundManager;
 import texture.AnimListener;
 import javax.media.opengl.GLCanvas;
 import javax.swing.*;
@@ -12,6 +13,7 @@ public class mpLevel2 extends JFrame {
     public static void showMpLevel2(JFrame gameWindow) {
 
         FPSAnimator animator;
+        SoundManager.stopSound("src/Assets/sounds/pacmanSong.wav");
 
         Level2MultiListener gameListener = new Level2MultiListener(gameWindow);
 
