@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static UIwindows.menu.username.userName;
 import static javax.media.opengl.GL.GL_CURRENT_BIT;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
 
@@ -415,7 +416,7 @@ public class SingleLevel2Listener extends BaseJogl {
         gl.glPushMatrix();
         GLUT glut = new GLUT();
         gl.glRasterPos2d(-0.1, 0.958);
-        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, "Score : " + Score);
+        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, userName + " Score : " + Score);
         gl.glRasterPos2d(-0.9, 0.958);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV : " + Level);
         gl.glPopMatrix();

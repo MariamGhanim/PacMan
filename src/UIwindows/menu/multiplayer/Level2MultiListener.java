@@ -20,6 +20,9 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
+
+import static UIwindows.menu.twoUsername.userName1;
+import static UIwindows.menu.twoUsername.userName2;
 import static java.awt.event.KeyEvent.*;
 
 
@@ -152,7 +155,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
 
             if (pelletEaten) {
                 i--;
-                System.out.println("Pac1 Score: " + score1 + " Pac2 Score: " + score2);
+                System.out.println(userName1 + " Score: " + score1 + " | " + userName2 + " Score: " + score2);
             }
         }
     }
@@ -194,17 +197,19 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         }
 
     }
-    public void theWinner(){
-        if(eating.isEmpty()){
-            if(score1 > score2){
-                System.out.println("The winner is PacMan 1");
-                // show that player1 is win
-            }else{
-                System.out.println("The winner is PacMan 2");
+
+    public void theWinner() {
+        // Determine the winner when the food runs out
+        if (eating.isEmpty()) {
+            if (score1 > score2) {
+                System.out.println("The winner is " + userName1);
+            } else {
+                System.out.println("The winner is " + userName2);
 
             }
         }
     }
+
     public void handleTheLose() {
         //  for collision with ghosts (PacMan loses)
         for (int i = 0; i < ghost.size(); i++) {
@@ -225,9 +230,9 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         if (eating.isEmpty()) {
             isPaused = true;
             if (score1 > score2) {
-                announceWinner("PacMan 1 wins with a score of " + score1 + "!");
+                announceWinner(userName1 + " wins with a score of " + score1 + "!");
             } else if (score2 > score1) {
-                announceWinner("PacMan 2 wins with a score of " + score2 + "!");
+                announceWinner(userName2 + " wins with a score of " + score2 + "!");
             } else {
                 announceWinner("It's a tie! Both players scored " + score1 + "!");
             }
@@ -307,7 +312,7 @@ public class Level2MultiListener extends AnimListener implements KeyListener , G
         gl.glPushMatrix();
         gl.glRasterPos2d(-0.2, 0.95);
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
-                "Score1: " + score1 + " |  Score2: " + score2);
+                userName1 + ": " + score1 + " | " + userName2 + ": " + score2);
 
         gl.glRasterPos2d(-0.9, 0.95);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);

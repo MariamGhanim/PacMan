@@ -27,10 +27,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import static UIwindows.menu.username.userName;
 import static java.awt.event.KeyEvent.*;
 
 public class SingleLevel1Listener extends AnimListener implements KeyListener , GLEventListener {
-
+    public int levelOneHS = 0;
+    public boolean levelOneNewHS = false;
     int maxWidth = 600;
     int maxHeight = 600;
     int index1 = 0,index2=0;
@@ -118,7 +120,13 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         gl.glPushMatrix();
         gl.glRasterPos2d(-0.2, 0.95); // النص الخاص بـ Score
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
-                " Pacman  Score: " + score);// moemen
+                userName + " Score: " + score);
+
+        if (score > levelOneHS) {
+            levelOneHS = score;
+            levelOneNewHS = true;
+        }
+
         gl.glRasterPos2d(-0.9, 0.95); // النص الخاص بـ Level
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
         gl.glPopMatrix();
