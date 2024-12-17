@@ -231,7 +231,7 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
 
             if (pelletEaten) {
                 i--;
-                System.out.println("Pac1 Score: " + score );
+                System.out.println(userName + " Score: " + score );
             }
         }
     }
@@ -242,7 +242,7 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         for (int i = 0; i < ghost.size(); i++) {
             if (pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()) {
                 isPaused = true;
-                announceLoser("PacMan lose with a score of " + score + "!");
+                announceLoser(userName + " lost with a score of " + score + "!");
 
                 return;
             }
@@ -252,7 +252,7 @@ public class SingleLevel1Listener extends AnimListener implements KeyListener , 
         if (eat.isEmpty()) {
             isPaused = true;
 
-                announceWinner("PacMan wins with a score of " + score + "!");
+                announceWinner(userName + " won with a score of " + score + "!");
 
         }
     }

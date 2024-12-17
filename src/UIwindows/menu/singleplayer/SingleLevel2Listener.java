@@ -244,7 +244,8 @@ public class SingleLevel2Listener extends BaseJogl {
     private static final int BUFFER_SIZE = 4096, WIDTH = 100, Height = 100;
     private final double SPEED = 0.25;
     private boolean StartGame = true , GameOver = false; // انا عدلت هنا
-    int keyCode, Level = 2, Angle = 0, Score = 0, FinalScore = 780, FaceAnimations = 0, Face = 0, n = 0;
+    int keyCode, Level = 2, Angle = 0, FaceAnimations = 0, Face = 0, n = 0;
+    public int Score = 0, highScore = 0, FinalScore = 780;
 
     private void ResetPoints() {
         PointsList.clear();
@@ -301,7 +302,7 @@ public class SingleLevel2Listener extends BaseJogl {
         Enemies[0].index = 20;
         Enemies[1].index = 30;
         Enemies[2].index = 40;
-        Enemies[2].index = 40;
+
         for (PacObject E : Enemies) {
             E.x = PointsList.get(E.index).getX();
             E.y = PointsList.get(E.index).getY();
