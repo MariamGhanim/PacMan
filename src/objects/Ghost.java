@@ -41,15 +41,15 @@ public class Ghost {
         this.isChase = chase;
         this.isScatter = scatter;
         this.isFrightened = frightened;
-        this.modeStartTime = System.currentTimeMillis(); // تحديد وقت بدء الحالة
+        this.modeStartTime = System.currentTimeMillis();
     }
     public void moveScatter() {
         if (System.currentTimeMillis() - modeStartTime <= chaseTime * 1000) {
             switch (index) {
-                case 0 -> { targetX = 15; targetY = 0; } // Blinky أعلى يمين
-                case 1 -> { targetX = 0; targetY = 0; } // Pinky أعلى يسار
-                case 2 -> { targetX = 0; targetY = 15; } // Inky أسفل يسار
-                case 3 -> { targetX = 15; targetY = 15; } // Clyde أسفل يمين
+                case 0 -> { targetX = 15; targetY = 0; }
+                case 1 -> { targetX = 0; targetY = 0; }
+                case 2 -> { targetX = 0; targetY = 15; }
+                case 3 -> { targetX = 15; targetY = 15; }
             }
         }
     }
@@ -99,33 +99,32 @@ public class Ghost {
             moveRandom();
         }
 
-        //لانتقال بين الأوضاع
+
         long elapsedTime = System.currentTimeMillis() - modeStartTime;
 
         if (isChase && elapsedTime > chaseTime * 1000) {
-            switchMode(false, true, false);  // تغيير الوضع إلى scatter
+            switchMode(false, true, false);
         }
         else if (isFrightened && elapsedTime > frighteningTime * 1000) {
-            switchMode(false, true, false);  // scatter
+            switchMode(false, true, false);
         }
 
 
     }
     public void moveChase() {
         if (index == 6) {
-            // Blinky يطارد مباشرة
+
             targetX = 15; targetY = 0;
         }
         else if (index == 7) {
-            // Pinky يطارد الموقع الذي أمام باك مان
+
             targetX = 5; targetY = 0;
         }
         else if (index == 2) {
-            // Inky يطارد باك مان بناءً على اساس بلينكي وباك مان
             targetX = 10; targetY = 15;
         }
         else if (index == 3) {
-            // Clyde يطارد باك مان مباشرة لكنه يعود عند اقترابه
+
             targetX = 0; targetY = 10;
         }
     }

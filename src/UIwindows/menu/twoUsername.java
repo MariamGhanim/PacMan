@@ -13,6 +13,7 @@ public class twoUsername {
     public static String userName1;
     public static String userName2;
     private static JPanel backButtonPanel;
+
     public static void showTwoUsernames(JFrame gameWindow) {
         gameWindow.getContentPane().setBackground(Color.YELLOW);
         GLCanvas canvas = new GLCanvas();

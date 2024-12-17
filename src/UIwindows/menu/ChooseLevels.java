@@ -50,7 +50,7 @@ public class ChooseLevels {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 int windowWidth = gameWindow.getWidth();
                 int windowHeight = gameWindow.getHeight();
-                int centerX = (windowWidth / 2 )- 70;
+                int centerX = (windowWidth / 2) - 70;
 
                 int startY = (int) (windowHeight * 0.3);
                 int gap = (int) (windowHeight * 0.3);

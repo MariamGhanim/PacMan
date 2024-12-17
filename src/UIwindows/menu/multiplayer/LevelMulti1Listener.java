@@ -1,5 +1,7 @@
 package UIwindows.menu.multiplayer;
 
+
+import UIwindows.menu.startOrExit;
 import com.sun.opengl.util.GLUT;
 import logic.SoundManager;
 import objects.Eating;
@@ -16,6 +18,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -23,6 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import static UIwindows.menu.twoUsername.userName1;
+import static UIwindows.menu.twoUsername.userName2;
 import static java.awt.event.KeyEvent.*;
 
 public class LevelMulti1Listener extends AnimListener implements KeyListener , GLEventListener {
@@ -93,8 +98,11 @@ int rows = map.length;
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     static int[] textures = new int[textureNames.length];
     GL gl;
+    private JFrame gameWindow;
 
-
+    public LevelMulti1Listener(JFrame gameWindow) {
+        this.gameWindow = gameWindow;
+    }
     public LevelMulti1Listener() {
 
     }
@@ -111,7 +119,7 @@ int rows = map.length;
         gl.glPushMatrix();
         gl.glRasterPos2d(-0.2, 0.95); // النص الخاص بـ Score
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24,
-                "Score1: " + score1+" | "+"Score2: "+score2);
+                userName1 + score1 + " | " + userName2 + ": " + score2);
         gl.glRasterPos2d(-0.9, 0.95); // النص الخاص بـ Level
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV: " + level);
         gl.glPopMatrix();
@@ -221,30 +229,102 @@ int rows = map.length;
 
             if (pelletEaten) {
                 i--;
-                System.out.println("Pac1 Score: " + score1 + " Pac2 Score: " + score2);
+                System.out.println(userName1 + " Score: " + score1 + " | " + userName2 + " Score: " + score2);
             }
         }
     }
-    public void theWinner(){
-        if(eat.isEmpty()){
-            if(score1 > score2){
-                // show that player1 is win
-            }else{
 
+    public void theWinner() {
+        // Determine the winner when the food runs out
+        if (eat.isEmpty()) {
+            if (score1 > score2) {
+                System.out.println("The winner is " + userName1);
+            } else {
+                System.out.println("The winner is " + userName2);
             }
         }
     }
-    public void handleTheLose(){
-        for(int i = 0; i < ghost.size();i++){
-            if(pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()){
-                System.out.println("PacMan 2 win");
-                //stop the game
-            }else if(pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()){
-                System.out.println("PacMan 1 win");
-                //stop the game
+
+    public void handleTheLose() {
+
+        for (int i = 0; i < ghost.size(); i++) {
+            if (pacman1.ConvertX() == ghost.get(i).ConvertX() && pacman1.ConvertY() == ghost.get(i).ConvertY()) {
+                isPaused = true;
+                announceWinner("PacMan 2 wins with a higher score!");
+                return;
+            }
+
+            if (pacman2.ConvertX() == ghost.get(i).ConvertX() && pacman2.ConvertY() == ghost.get(i).ConvertY()) {
+                isPaused = true;
+                announceWinner("PacMan 1 wins with a higher score!");
+                return;
+            }
+        }
+
+        //  If all pellets are eaten (based on scores)
+        if (eat.isEmpty()) {
+            isPaused = true;
+            if (score1 > score2) {
+                announceWinner(userName1 + " wins with a score of " + score1 + "!");
+            } else if (score2 > score1) {
+                announceWinner(userName2 + " wins with a score of " + score2 + "!");
+            } else {
+                announceWinner("It's a tie! Both players scored " + score1 + "!");
             }
         }
     }
+
+    private void announceWinner(String message) {
+        SwingUtilities.invokeLater(() -> {
+
+            JDialog dialog = new JDialog();
+            dialog.setTitle("Game Over");
+            dialog.setSize(300, 150);
+            dialog.setLocationRelativeTo(null);
+
+            JLabel countdownLabel = new JLabel("<html>" + message + "<br>Leveling up in 5...</html>", SwingConstants.CENTER);
+            countdownLabel.setVerticalAlignment(SwingConstants.CENTER);
+            countdownLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            countdownLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            dialog.add(countdownLabel);
+
+            dialog.setVisible(true);
+
+
+            SwingWorker<Void, Integer> countdownWorker = new SwingWorker<Void, Integer>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    for (int i = 5; i >= 0; i--) {
+                        publish(i); // Update the countdown every second
+                        Thread.sleep(1000); // Wait for 1 second
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void process(java.util.List<Integer> chunks) {
+                    int timeRemaining = chunks.get(chunks.size() - 1);
+                    // Update the label with the current countdown value
+                    countdownLabel.setText("<html>" + message + "<br>Leveling up in " + timeRemaining + "...</html>");
+                }
+
+                @Override
+                protected void done() {
+                    dialog.dispose(); // Close the dialog
+                    // Transition to the next level
+                    gameWindow.getContentPane().removeAll();
+                    mpLevel2.showMpLevel2(gameWindow);
+                    gameWindow.revalidate();
+                    gameWindow.repaint();
+                }
+            };
+
+            // Start the countdown
+            countdownWorker.execute();
+        });
+    }
+
+
     @Override
     public void display(GLAutoDrawable gld) {
         gl = gld.getGL();
@@ -267,9 +347,9 @@ int rows = map.length;
         handelGhostMove();
         handleKey();
         handleEat();
-
-        handleTheLose();
         theWinner();
+        handleTheLose();
+
     }
     private void drawGhost() {
         for (Ghost g : ghost) {

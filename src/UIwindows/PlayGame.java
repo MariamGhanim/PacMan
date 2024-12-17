@@ -1,5 +1,9 @@
 package UIwindows;
 import UIwindows.menu.startOrExit;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
 public class PlayGame {
@@ -11,5 +15,6 @@ public class PlayGame {
         startOrExit.showMenu(gameWindow);
         gameWindow.setVisible(true);
     }
+
 
 }

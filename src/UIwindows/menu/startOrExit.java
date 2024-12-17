@@ -72,8 +72,8 @@ public class startOrExit {
                         "3. Avoid ghosts.\n" +
                         "4. Eat all the items to win.\n" +
                         "5. Space to pause.\n" +
-                        "6. If a player gets caught by a ghost, they lose a life.\n" +
-                        "7. The game ends when one player wins or both players lose all lives.\n",
+                        "6. If a player gets caught by a ghost, they lose a life.\n"
+                        ,
                 "Game Instructions", JOptionPane.INFORMATION_MESSAGE));
 
         exitButton.addActionListener(e -> System.exit(0));

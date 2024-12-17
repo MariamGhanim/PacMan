@@ -8,12 +8,14 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
 import javax.sound.sampled.*;
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static UIwindows.menu.username.userName;
 import static javax.media.opengl.GL.GL_CURRENT_BIT;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
 
@@ -34,7 +36,7 @@ public class SingleLevel2Listener extends BaseJogl {
             "extra/dot.png", "extra/apple.png", "Ready.png",
             "GameOver.png", "Win.png", "menu.jpg",
             "level2.png", "ghosts/blinky.png", "ghosts/pinky.png",
-            "ghosts/clyde.png", "blue_ghost.png"  , "Background.jpeg"
+            "ghosts/clyde.png"  , "Background.jpeg"
     };
 
 
@@ -46,7 +48,7 @@ public class SingleLevel2Listener extends BaseJogl {
             this.texture = texture;
             this.index = index;
         }
-//
+        //
         PacObject(int texture, int index, int random) {
             this.texture = texture;
             this.index = index;
@@ -242,7 +244,8 @@ public class SingleLevel2Listener extends BaseJogl {
     private static final int BUFFER_SIZE = 4096, WIDTH = 100, Height = 100;
     private final double SPEED = 0.25;
     private boolean StartGame = true , GameOver = false; // انا عدلت هنا
-    int keyCode, Level = 2, Angle = 0, Score = 0, FinalScore = 780, FaceAnimations = 0, Face = 0, n = 0;
+    int keyCode, Level = 2, Angle = 0, FaceAnimations = 0, Face = 0, n = 0;
+    public int Score = 0, highScore = 0, FinalScore = 780;
 
     private void ResetPoints() {
         PointsList.clear();
@@ -299,7 +302,7 @@ public class SingleLevel2Listener extends BaseJogl {
         Enemies[0].index = 20;
         Enemies[1].index = 30;
         Enemies[2].index = 40;
-        Enemies[2].index = 40;
+
         for (PacObject E : Enemies) {
             E.x = PointsList.get(E.index).getX();
             E.y = PointsList.get(E.index).getY();
@@ -414,7 +417,7 @@ public class SingleLevel2Listener extends BaseJogl {
         gl.glPushMatrix();
         GLUT glut = new GLUT();
         gl.glRasterPos2d(-0.1, 0.958);
-        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, "Score : " + Score);
+        glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, userName + " Score : " + Score);
         gl.glRasterPos2d(-0.9, 0.958);
         glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "LV : " + Level);
         gl.glPopMatrix();
@@ -423,11 +426,15 @@ public class SingleLevel2Listener extends BaseJogl {
     }
 
     private boolean killRange() {
-        return (
-                (Math.abs(SingleLevel2Listener.y - Enemies[0].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[0].x) <= 5) ||
-                        (Math.abs(SingleLevel2Listener.y - Enemies[1].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[1].x) <= 5) ||
-                        (Math.abs(SingleLevel2Listener.y - Enemies[2].y) <= 5 && Math.abs(SingleLevel2Listener.x - Enemies[2].x) <= 5)
-        );
+        for (PacObject enemy : Enemies) {
+            if (Math.abs(SingleLevel2Listener.x - enemy.x) < 1.0 &&
+                    Math.abs(SingleLevel2Listener.y - enemy.y) < 1.0) {
+
+                JOptionPane.showMessageDialog(null, "You Lose!", "Game Over", JOptionPane.ERROR_MESSAGE);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void keyPressed(final KeyEvent event) {
