@@ -1,5 +1,4 @@
 package UIwindows.menu;
-
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -10,13 +9,24 @@ import java.io.IOException;
 
 public class Win extends JFrame {
     public Win() {
-        // إعداد نافذة شاشة الفوز
         setTitle("You Win!");
-        setSize(800, 600); // حجم النافذة
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         AnimationPanel animationPanel = new AnimationPanel();
         add(animationPanel);
+
+        JButton backButton = new JButton("Back");
+        backButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        backButton.setBackground(Color.GRAY);
+        backButton.setForeground(Color.WHITE);
+        backButton.setFocusPainted(false);
+
+        JPanel backButtonPanel = new JPanel();
+        backButtonPanel.setLayout(new BorderLayout());
+        backButtonPanel.setBackground(Color.BLACK);
+        backButtonPanel.add(backButton, BorderLayout.WEST);
+        add(backButtonPanel, BorderLayout.SOUTH);
         setVisible(true);
     }
     class AnimationPanel extends JPanel implements ActionListener {
@@ -26,9 +36,9 @@ public class Win extends JFrame {
         private int pacmanX = 50, pacmanY = 250;
         private int ghost1X = 750, ghost1Y = 200;
         private int ghost2X = 750, ghost2Y = 300;
-        private int pacmanSpeed = 5;
-        private int ghost1Speed = -5;
-        private int ghost2Speed = -6;
+        private int pacmanSpeed = 5; // سرعة Pac-Man
+        private int ghost1Speed = -5; // سرعة الشبح الأول
+        private int ghost2Speed = -6; // سرعة الشبح الثاني
         private Clip winSound;
         public AnimationPanel() {
 
@@ -43,7 +53,7 @@ public class Win extends JFrame {
                 AudioInputStream audioStream = AudioSystem.getAudioInputStream(winSoundFile);
                 winSound = AudioSystem.getClip();
                 winSound.open(audioStream);
-                winSound.loop(Clip.LOOP_CONTINUOUSLY);
+                winSound.loop(Clip.LOOP_CONTINUOUSLY); // تشغيل الصوت في حلقة مستمرة
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 e.printStackTrace();
             }
@@ -58,13 +68,14 @@ public class Win extends JFrame {
             super.paintComponent(g);
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.drawImage(currentPacmanImage, pacmanX, pacmanY, 50, 50, this);
-            g.drawImage(ghost1Image, ghost1X, ghost1Y, 50, 50, this);
-            g.drawImage(ghost2Image, ghost2X, ghost2Y, 50, 50, this);
+            g.drawImage(currentPacmanImage, pacmanX, pacmanY, 50, 50, this); // رسم Pac-Man
+            g.drawImage(ghost1Image, ghost1X, ghost1Y, 50, 50, this); // رسم الشبح الأول
+            g.drawImage(ghost2Image, ghost2X, ghost2Y, 50, 50, this); // رسم الشبح الثاني
 
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("YOU WIN!", 300, 100);
+
         }
 
         @Override
@@ -88,7 +99,6 @@ public class Win extends JFrame {
             }
             repaint();
         }
-
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,5 @@
 package UIwindows.menu;
+
 import UIwindows.PlayGame;
 import logic.SoundManager;
 
@@ -12,21 +13,17 @@ import java.awt.event.ActionListener;
 public class username {
     public static String userName;
     private static JPanel backButtonPanel;
+
     public static void showUsername(JFrame gameWindow) {
         gameWindow.getContentPane().setBackground(Color.YELLOW);
-
         GLCanvas canvas = new GLCanvas();
         gameWindow.setLayout(new BorderLayout());
-
-
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
         inputPanel.setBackground(Color.YELLOW);
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.CENTER;
-
         JLabel nameLabel = new JLabel("Your Username");
         nameLabel.setFont(new Font("Arial", Font.BOLD, 40));
         nameLabel.setForeground(Color.BLACK);
@@ -55,7 +52,6 @@ public class username {
 
 
         });
-
 
         submitButton.addActionListener(new ActionListener() {
             @Override
